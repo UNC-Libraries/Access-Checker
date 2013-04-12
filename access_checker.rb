@@ -24,6 +24,7 @@ require 'highline/import'
   puts "Type one of the following:"
   puts "  asp  : Alexander Street Press links"
   puts "  ebr  : Ebrary links"
+  puts "  ss   : SerialsSolutions links"
   puts "  srmo : Sage Research Methods Online links"
   puts "  spr  : SpringerLink links"
   puts "  upso : University Press (inc. Oxford) Scholarship Online links"
@@ -85,6 +86,15 @@ csv_data.each do |r|
         access = "found"
     else
       access = "check"
+    end
+
+  elsif package == "ss"
+    if page.include? "SS_NoJournalFoundMsg"
+      access = "no access"
+    elsif page.include? "SS_Holding"
+      access = "access"
+    else
+      access = "check manually"
     end
 
   elsif package == "spr"

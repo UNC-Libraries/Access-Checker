@@ -5,6 +5,7 @@ This script can currently check for access problems for the following platforms/
 - Alexander Street Press 
 - Ebrary 
 - Sage Research Methods Online 
+- SerialsSolutions
 - SpringerLink 
 - University Press (inc. Oxford) Scholarship Online
 
@@ -39,3 +40,10 @@ Script will output a .csv file containing all data from the input file, with a n
 You don't have to start over from the beginning. Remove all rows already checked (i.e. included in the output file) from the input file and restart the script, using the same output file location. 
 
 The header row will be inserted into the output file again, so watch for that in the final results. 
+
+# How it works
+First, this script does not access, download, or touch *ANY* actual full-text content hosted by our providers. 
+
+It simply visits the landing/description/info page for each ostensibly full-text resource---the page a user clicking the link in a catalog record would be brought to, at the same URL that our ILS link checker would ping. 
+
+Depending on the platform/package, it checks for text indicating full or restricted access a) displayed on that page; OR b) buried in the page source code.
