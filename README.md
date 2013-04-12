@@ -1,7 +1,7 @@
 # Ebook access checker
 A simple JRuby script to check for full-text access to e-resource titles. Plain old URL/link checking won't alert you if one of your ebook links points to a valid HTML page reading "NO ACCESS." This script will.
 
-This script can currently check for access problems for the following platforms/vendors: 
+This script can currently check for access problems for the following platforms/vendors (so far): 
 - Alexander Street Press 
 - Ebrary 
 - Sage Research Methods Online 
