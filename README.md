@@ -11,9 +11,7 @@ This script can currently check for access problems for the following platforms/
 # Requirements
 - You must have [JRuby] (http://jruby.org/) installed. This script has been tested on JRuby 1.7.3. Installing JRuby is super-easy; point-and-click .exe installers are available for Windows on the [JRuby homepage] (http://jruby.org/).
 
-- Once JRuby is installed, you will need to install the following JRuby Gems: 
--- [Celerity] (http://celerity.rubyforge.org/)
--- [Highline] (http://highline.rubyforge.org/)
+- Once JRuby is installed, you will need to install the JRuby Gems [Celerity] (http://celerity.rubyforge.org/) and [Highline] (http://highline.rubyforge.org/).
 
 To install these Gems, open the command line shell and type the following commands: 
 - jruby -S gem install celerity
