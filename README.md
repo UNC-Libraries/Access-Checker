@@ -39,5 +39,3 @@ Script will output a .csv file containing all data from the input file, with a n
 You don't have to start over from the beginning. Remove all rows already checked (i.e. included in the output file) from the input file and restart the script, using the same output file location. 
 
 The header row will be inserted into the output file again, so watch for that in the final results. 
-
-
