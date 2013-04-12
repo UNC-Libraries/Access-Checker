@@ -1,3 +1,20 @@
+# Tested in JRuby 1.7.3
+# Written by Kristina Spurgin
+# Last updated: 20130412
+
+# Usage:
+# jruby -S access_checker.rb [inputfilelocation] [outputfilelocation]
+
+# Input file: 
+# .csv file with: 
+# - one header row
+# - any number of columns to left of final column
+# - one URL in final column
+
+# Output file: 
+# .csv file with all the data from the input file, plus a new column containing
+#   access checker result
+
 require 'celerity'
 require 'csv'
 require 'highline/import'
