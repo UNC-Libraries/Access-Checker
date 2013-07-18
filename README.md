@@ -3,7 +3,8 @@ A simple JRuby script to check for full-text access to e-resource titles. Plain 
 
 This script can currently check for access problems for the following platforms/vendors (so far): 
 - Alexander Street Press 
-- Ebrary 
+- Ebrary
+- EBSCOhost eBook Collection
 - Sage Research Methods Online 
 - SerialsSolutions
 - SpringerLink 

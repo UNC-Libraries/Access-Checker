@@ -24,6 +24,7 @@ require 'highline/import'
   puts "Type one of the following:"
   puts "  asp  : Alexander Street Press links"
   puts "  ebr  : Ebrary links"
+  puts "  ebs  : EBSCOhost ebook collection"
   puts "  ss   : SerialsSolutions links"
   puts "  srmo : Sage Research Methods Online links"
   puts "  spr  : SpringerLink links"
@@ -79,6 +80,15 @@ csv_data.each do |r|
       access = "check"
     end
 
+  elsif package == "ebs"
+    if page.match(/class="std-warning-text">No results/)
+      access = "no access"
+    elsif page.include?("eBook Full Text")
+        access = "access"
+    else
+      access = "check"
+    end
+    
   elsif package == "srmo"
     if page.include?("Page Not Found")
       access = "not found"
