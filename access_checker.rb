@@ -114,6 +114,8 @@ csv_data.each do |r|
         access = "full"
       elsif page.match(/DOI Not Found/) != nil
         access = "DOI error"
+      elsif page.include?("Bookshop, Wageningen")
+        access = "wageningenacademic.com"
     else
       access = "check"
     end
