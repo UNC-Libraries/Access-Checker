@@ -22,13 +22,14 @@ require 'highline/import'
   puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
   puts "What platform/package are you access checking?"
   puts "Type one of the following:"
-  puts "  asp  : Alexander Street Press links"
-  puts "  ebr  : Ebrary links"
-  puts "  ebs  : EBSCOhost ebook collection"
-  puts "  ss   : SerialsSolutions links"
-  puts "  srmo : Sage Research Methods Online links"
-  puts "  spr  : SpringerLink links"
-  puts "  upso : University Press (inc. Oxford) Scholarship Online links"
+  puts "  asp    : Alexander Street Press links"
+  puts "  ebr    : Ebrary links"
+  puts "  ebs    : EBSCOhost ebook collection"
+  puts "  nccorv : NCCO - Check for related volumes"
+  puts "  ss     : SerialsSolutions links"
+  puts "  srmo   : Sage Research Methods Online links"
+  puts "  spr    : SpringerLink links"
+  puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
   puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 
   package = ask("Package?  ")
@@ -87,6 +88,13 @@ csv_data.each do |r|
         access = "access"
     else
       access = "check"
+    end
+
+  elsif package == "nccorv"
+    if page.match(/<div id="relatedVolumes">/)
+      access = "related volumes section present"
+    else
+      access = "no related volumes section"
     end
     
   elsif package == "srmo"

@@ -10,6 +10,9 @@ This script can currently check for access problems for the following platforms/
 - SpringerLink 
 - University Press (inc. Oxford) Scholarship Online
 
+The script can check for some other special issues on certain platforms:
+- Nineteenth Century Collections Online - check for presence of "Related Volumes" section on an ebook landing page
+
 # Requirements
 - You must have [JRuby] (http://jruby.org/) installed. This script has been tested on JRuby 1.7.3. Installing JRuby is super-easy; point-and-click .exe installers are available for Windows on the [JRuby homepage] (http://jruby.org/).
 
