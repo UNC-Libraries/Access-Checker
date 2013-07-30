@@ -135,7 +135,6 @@ csv_data.each do |r|
     else
       access = "check"
     end
-  end
 
   elsif package == 'wol'
     if page.include?("You have full text access to this content")
