@@ -30,6 +30,7 @@ require 'highline/import'
   puts "  srmo   : Sage Research Methods Online links"
   puts "  spr    : SpringerLink links"
   puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
+  puts "  wol    : Wiley Online Library"
   puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 
   package = ask("Package?  ")
@@ -131,6 +132,16 @@ csv_data.each do |r|
   elsif package == "upso"
     if page.include?("<div class=\"contentItem\">")
       access = "access ok"
+    else
+      access = "check"
+    end
+  end
+
+  elsif package == 'wol'
+    if page.include?("You have full text access to this content")
+      access = "full"
+    elsif page.include?("DOI Not Found")
+      access = "DOI error"
     else
       access = "check"
     end
