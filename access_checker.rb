@@ -65,14 +65,14 @@ csv_data.each do |r|
   b.goto(url)
   page = b.html
 
-  elsif package == "apb"
+  if package == "apb"
     if page.match(/type="onlineread"/)
       access = "Access probably ok"
     else
       access = "check"
     end  
       
-  if package == "asp"
+  elsif package == "asp"
     if page.include?("Page Not Found")
       access = "not found"
     elsif page.include?("error")
