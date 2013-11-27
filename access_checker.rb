@@ -22,13 +22,16 @@ require 'highline/import'
   puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
   puts "What platform/package are you access checking?"
   puts "Type one of the following:"
+  puts "  apb    : Apabi ebooks"
   puts "  asp    : Alexander Street Press links"
   puts "  ebr    : Ebrary links"
   puts "  ebs    : EBSCOhost ebook collection"
+  puts "  end    : Endeca - Check for undeleted records"
   puts "  nccorv : NCCO - Check for related volumes"
-  puts "  ss     : SerialsSolutions links"
-  puts "  srmo   : Sage Research Methods Online links"
+  puts "  scid   : ScienceDirect ebooks (Elsevier)"
   puts "  spr    : SpringerLink links"
+  puts "  srmo   : Sage Research Methods Online links"
+  puts "  ss     : SerialsSolutions links"
   puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
   puts "  wol    : Wiley Online Library"
   puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
@@ -62,6 +65,13 @@ csv_data.each do |r|
   b.goto(url)
   page = b.html
 
+  elsif package == "apb"
+    if page.match(/type="onlineread"/)
+      access = "Access probably ok"
+    else
+      access = "check"
+    end  
+      
   if package == "asp"
     if page.include?("Page Not Found")
       access = "not found"
@@ -91,12 +101,41 @@ csv_data.each do |r|
       access = "check"
     end
 
+  elsif package == "end"
+    if page.include?("Invalid record")
+      access = "deleted OK"
+    else
+      access = "possible ghost record - check"
+    end    
+    
   elsif package == "nccorv"
     if page.match(/<div id="relatedVolumes">/)
       access = "related volumes section present"
     else
       access = "no related volumes section"
     end
+
+  elsif package == "scid"
+    if page.match(/<td class=nonSerialEntitlementIcon><span class="sprite_nsubIcon_sci_dir"/)
+      access = "not full text"
+    elsif page.match(/title="You are entitled to access the full text of this document"/)
+      access = "full text"
+    else
+      access = "check"
+    end    
+
+  elsif package == "spr"
+    if page.match(/viewType="Denial"/) != nil
+      access = "restricted"
+      elsif page.match(/viewType="Full text download"/) != nil
+        access = "full"
+      elsif page.match(/DOI Not Found/) != nil
+        access = "DOI error"
+      elsif page.include?("Bookshop, Wageningen")
+        access = "wageningenacademic.com"
+    else
+      access = "check"
+    end    
     
   elsif package == "srmo"
     if page.include?("Page Not Found")
@@ -114,19 +153,6 @@ csv_data.each do |r|
       access = "access"
     else
       access = "check manually"
-    end
-
-  elsif package == "spr"
-    if page.match(/viewType="Denial"/) != nil
-      access = "restricted"
-      elsif page.match(/viewType="Full text download"/) != nil
-        access = "full"
-      elsif page.match(/DOI Not Found/) != nil
-        access = "DOI error"
-      elsif page.include?("Bookshop, Wageningen")
-        access = "wageningenacademic.com"
-    else
-      access = "check"
     end
 
   elsif package == "upso"
