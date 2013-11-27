@@ -3,15 +3,19 @@ A simple JRuby script to check for full-text access to e-resource titles. Plain 
 
 This script can currently check for access problems for the following platforms/vendors (so far): 
 - Alexander Street Press 
+- Apabi
 - Ebrary
 - EBSCOhost eBook Collection
+- ScienceDirect ebooks (Elsevier)
 - Sage Research Methods Online 
 - SerialsSolutions
 - SpringerLink 
 - University Press (inc. Oxford) Scholarship Online
+- Wiley Online Library
 
 The script can check for some other special issues on certain platforms:
 - Nineteenth Century Collections Online - check for presence of "Related Volumes" section on an ebook landing page
+- Endeca - check whether a record has been deleted or not
 
 # Requirements
 - You must have [JRuby] (http://jruby.org/) installed. This script has been tested on JRuby 1.7.3. Installing JRuby is super-easy; point-and-click .exe installers are available for Windows on the [JRuby homepage] (http://jruby.org/).
