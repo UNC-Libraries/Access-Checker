@@ -30,7 +30,8 @@ require 'highline/import'
   puts "  nccorv : NCCO - Check for related volumes"
   puts "  scid   : ScienceDirect ebooks (Elsevier)"
   puts "  spr    : SpringerLink links"
-  puts "  srmo   : Sage Research Methods Online links"
+  puts "  skno   : SAGE Knowledge links"
+  puts "  srmo   : SAGE Research Methods Online links"
   puts "  ss     : SerialsSolutions links"
   puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
   puts "  wol    : Wiley Online Library"
@@ -123,6 +124,15 @@ csv_data.each do |r|
     else
       access = "check"
     end    
+
+  elsif package == "skno"
+    if page.include?("Page Not Found")
+      access = "not found"
+      elsif page.include?("Add to My Lists")
+        access = "found"
+    else
+      access = "check"
+    end
 
   elsif package == "spr"
     if page.match(/viewType="Denial"/) != nil

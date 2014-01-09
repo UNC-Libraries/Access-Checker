@@ -7,7 +7,8 @@ This script can currently check for access problems for the following platforms/
 - Ebrary
 - EBSCOhost eBook Collection
 - ScienceDirect ebooks (Elsevier)
-- Sage Research Methods Online 
+- SAGE Knowledge
+- SAGE Research Methods Online 
 - SerialsSolutions
 - SpringerLink 
 - University Press (inc. Oxford) Scholarship Online
