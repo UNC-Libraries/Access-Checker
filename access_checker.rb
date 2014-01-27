@@ -88,25 +88,29 @@ csv_data.each do |r|
     end
 
   elsif package == "duphw"
-    # I could find nothing on the ebook landing page to differentiate those to which we have full text access from those to which we do not.
-    # This requires an extra step of having the checker visit one of the content pages, and testing whether one gets the content, or a log-in page
-    url_title_segment = page.match(/http:\/\/reader\.dukeupress\.edu\/([^\/]*)\/\d+/).captures[0]
-    content_url = "http://reader.dukeupress.edu/#{url_title_segment}/25"
-
-    # Celerity couldn't handle opening the fulltext content pages that actually work,
-    #  so I switch here to using open-uri to grab the HTML
-
-    thepage = ""
-    open(content_url) {|f|
-      f.each_line {|line| thepage << line}
-      }
-    
-    if thepage.include?("Log in to the e-Duke Books Scholarly Collection site")
-      access = "no access"
-    elsif thepage.include?("t-page-nav-arrows")
-      access = "full text access"
+    if page.include?("DOI Not Found")
+      access = "not found - DOI error"
     else
-      access = "check access manually"
+      # I could find nothing on the ebook landing page to differentiate those to which we have full text access from those to which we do not.
+      # This requires an extra step of having the checker visit one of the content pages, and testing whether one gets the content, or a log-in page
+      url_title_segment = page.match(/http:\/\/reader\.dukeupress\.edu\/([^\/]*)\/\d+/).captures[0]
+      content_url = "http://reader.dukeupress.edu/#{url_title_segment}/25"
+  
+      # Celerity couldn't handle opening the fulltext content pages that actually work,
+      #  so I switch here to using open-uri to grab the HTML
+  
+      thepage = ""
+      open(content_url) {|f|
+        f.each_line {|line| thepage << line}
+        }
+      
+      if thepage.include?("Log in to the e-Duke Books Scholarly Collection site")
+        access = "no access"
+      elsif thepage.include?("t-page-nav-arrows")
+        access = "full text access"
+      else
+        access = "check access manually"
+      end
     end
   
   
