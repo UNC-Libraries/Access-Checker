@@ -18,12 +18,14 @@
 require 'celerity'
 require 'csv'
 require 'highline/import'
+require 'open-uri'
 
   puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
   puts "What platform/package are you access checking?"
   puts "Type one of the following:"
   puts "  apb    : Apabi ebooks"
   puts "  asp    : Alexander Street Press links"
+  puts "  duphw  : Duke University Press (via HighWire)"
   puts "  ebr    : Ebrary links"
   puts "  ebs    : EBSCOhost ebook collection"
   puts "  end    : Endeca - Check for undeleted records"
@@ -56,7 +58,8 @@ CSV.open(output, "a") do |c|
   c << headers
 end
 
-b = Celerity::Browser.new
+b = Celerity::Browser.new(:browser => :firefox)
+#b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
 
 csv_data.each do |r|
   row_array = r.to_csv.parse_csv
@@ -84,10 +87,33 @@ csv_data.each do |r|
       access = "check"
     end
 
+  elsif package == "duphw"
+    # I could find nothing on the ebook landing page to differentiate those to which we have full text access from those to which we do not.
+    # This requires an extra step of having the checker visit one of the content pages, and testing whether one gets the content, or a log-in page
+    url_title_segment = page.match(/http:\/\/reader\.dukeupress\.edu\/([^\/]*)\/\d+/).captures[0]
+    content_url = "http://reader.dukeupress.edu/#{url_title_segment}/25"
+
+    # Celerity couldn't handle opening the fulltext content pages that actually work,
+    #  so I switch here to using open-uri to grab the HTML
+
+    thepage = ""
+    open(content_url) {|f|
+      f.each_line {|line| thepage << line}
+      }
+    
+    if thepage.include?("Log in to the e-Duke Books Scholarly Collection site")
+      access = "no access"
+    elsif thepage.include?("t-page-nav-arrows")
+      access = "full text access"
+    else
+      access = "check access manually"
+    end
+  
+  
   elsif package == "ebr"
     if page.include?("Document Unavailable\.")
       access = "no access"
-      elsif page.include?("Date Published")
+    elsif page.include?("Date Published")
         access = "access"
     else
       access = "check"
