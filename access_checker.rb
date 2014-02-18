@@ -61,6 +61,11 @@ end
 b = Celerity::Browser.new(:browser => :firefox)
 #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
 
+if package == "spr"
+    b.css = false
+    b.javascript_enabled = false
+end
+
 csv_data.each do |r|
   row_array = r.to_csv.parse_csv
   url = row_array.pop
@@ -175,7 +180,7 @@ csv_data.each do |r|
         access = "wageningenacademic.com"
     else
       access = "check"
-    end    
+    end
     
   elsif package == "srmo"
     if page.include?("Page Not Found")
