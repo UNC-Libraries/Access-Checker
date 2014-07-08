@@ -30,6 +30,7 @@ require 'open-uri'
   puts "  ebs    : EBSCOhost ebook collection"
   puts "  end    : Endeca - Check for undeleted records"
   puts "  nccorv : NCCO - Check for related volumes"
+  puts "  sabov  : Sabin Americana - Check for Other Volumes"
   puts "  scid   : ScienceDirect ebooks (Elsevier)"
   puts "  spr    : SpringerLink links"
   puts "  skno   : SAGE Knowledge links"
@@ -78,23 +79,23 @@ csv_data.each do |r|
     if page.match(/type="onlineread"/)
       access = "Access probably ok"
     else
-      access = "check"
+      access = "Check access manually"
     end  
       
   elsif package == "asp"
     if page.include?("Page Not Found")
-      access = "not found"
+      access = "Page not found"
     elsif page.include?("error")
-      access = "error"
+      access = "Error returned"
     elsif page.include?("Browse")
-        access = "access ok"
+        access = "Full access"
     else
-      access = "check"
+      access = "Check access manually"
     end
 
   elsif package == "duphw"
     if page.include?("DOI Not Found")
-      access = "not found - DOI error"
+      access = "DOI error"
     else
       # I could find nothing on the ebook landing page to differentiate those to which we have full text access from those to which we do not.
       # This requires an extra step of having the checker visit one of the content pages, and testing whether one gets the content, or a log-in page
@@ -110,29 +111,29 @@ csv_data.each do |r|
         }
       
       if thepage.include?("Log in to the e-Duke Books Scholarly Collection site")
-        access = "no access"
+        access = "No access"
       elsif thepage.include?("t-page-nav-arrows")
-        access = "full text access"
+        access = "Full access"
       else
-        access = "check access manually"
+        access = "Check access manually"
       end
     end
   
   
   elsif package == "ebr"
     if page.include?("Document Unavailable\.")
-      access = "no access"
+      access = "No access"
     elsif page.include?("Date Published")
-        access = "access"
+        access = "Full access"
     else
-      access = "check"
+      access = "Check access manually"
     end
 
   elsif package == "ebs"
     if page.match(/class="std-warning-text">No results/)
-      access = "no access"
+      access = "No access"
     elsif page.include?("eBook Full Text")
-        access = "access"
+        access = "Full access"
     else
       access = "check"
     end
@@ -151,69 +152,78 @@ csv_data.each do |r|
       access = "no related volumes section"
     end
 
+  elsif package == "sabov"
+    if page.match(/<a name="otherVols">/)
+      access = "other volumes section present"
+    else
+      access = "no other volumes section"
+    end
+      
   elsif package == "scid"
     if page.match(/<td class=nonSerialEntitlementIcon><span class="sprite_nsubIcon_sci_dir"/)
-      access = "not full text"
+      access = "Restricted access"
     elsif page.match(/title="You are entitled to access the full text of this document"/)
-      access = "full text"
+      access = "Full access"
     else
       access = "check"
     end    
 
   elsif package == "skno"
     if page.include?("Page Not Found")
-      access = "not found"
+      access = "No access - page not found"
       elsif page.include?("Add to My Lists")
-        access = "found"
+        access = "Probable full access"
     else
-      access = "check"
+      access = "Check access manually"
     end
 
   elsif package == "spr"
     if page.match(/viewType="Denial"/) != nil
-      access = "restricted"
+      access = "Restricted access"
       elsif page.match(/viewType="Full text download"/) != nil
-        access = "full"
+        access = "Full access"
       elsif page.match(/DOI Not Found/) != nil
         access = "DOI error"
       elsif page.include?("Bookshop, Wageningen")
         access = "wageningenacademic.com"
     else
-      access = "check"
+      access = "Check access manually"
     end
     
   elsif package == "srmo"
     if page.include?("Page Not Found")
-      access = "not found"
+      access = "No access - page not found"
       elsif page.include?("Add to Methods List")
-        access = "found"
+        access = "Probable full access"
     else
-      access = "check"
+      access = "Check access manually"
     end
 
   elsif package == "ss"
     if page.include? "SS_NoJournalFoundMsg"
-      access = "no access"
+      access = "No access indicated"
     elsif page.include? "SS_Holding"
-      access = "access"
+      access = "Access indicated"
     else
-      access = "check manually"
+      access = "Check access manually"
     end
 
   elsif package == "upso"
-    if page.include?("<div class=\"contentItem\">")
-      access = "access ok"
+    if page.include?("<div class=\"contentRestrictedMessage\">")
+      access = "Restricted access"
+    elsif page.include?("<div class=\"contentItem\">")
+      access = "Full access"
     else
-      access = "check"
+      access = "Check access manually"
     end
 
   elsif package == 'wol'
     if page.include?("You have full text access to this content")
-      access = "full"
+      access = "Full access"
     elsif page.include?("DOI Not Found")
       access = "DOI error"
     else
-      access = "check"
+      access = "Check access manually"
     end
   end
 
