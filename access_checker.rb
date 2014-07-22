@@ -220,6 +220,8 @@ csv_data.each do |r|
   elsif package == 'wol'
     if page.include?("You have full text access to this content")
       access = "Full access"
+    elsif page.include?("You have free access to this content")
+      access = "Full access (free)"
     elsif page.include?("DOI Not Found")
       access = "DOI error"
     else
