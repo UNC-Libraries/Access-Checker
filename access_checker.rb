@@ -213,6 +213,8 @@ csv_data.each do |r|
       access = "Restricted access"
     elsif page.include?("<div class=\"contentItem\">")
       access = "Full access"
+    elsif page.include? "DOI Not Found"
+      access = "DOI Error"
     else
       access = "Check access manually"
     end
