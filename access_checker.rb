@@ -29,6 +29,7 @@ require 'open-uri'
   puts "  ebr    : Ebrary links"
   puts "  ebs    : EBSCOhost ebook collection"
   puts "  end    : Endeca - Check for undeleted records"
+  puts "  fmgfod : FMG Films on Demand"
   puts "  nccorv : NCCO - Check for related volumes"
   puts "  sabov  : Sabin Americana - Check for Other Volumes"
   puts "  scid   : ScienceDirect ebooks (Elsevier)"
@@ -76,6 +77,7 @@ csv_data.each do |r|
   page = b.html
 
   if package == "apb"
+    sleeptime = 1
     if page.match(/type="onlineread"/)
       access = "Access probably ok"
     else
@@ -83,6 +85,7 @@ csv_data.each do |r|
     end  
       
   elsif package == "asp"
+    sleeptime = 1    
     if page.include?("Page Not Found")
       access = "Page not found"
     elsif page.include?("error")
@@ -94,6 +97,7 @@ csv_data.each do |r|
     end
 
   elsif package == "duphw"
+    sleeptime = 1    
     if page.include?("DOI Not Found")
       access = "DOI error"
     else
@@ -121,6 +125,7 @@ csv_data.each do |r|
   
   
   elsif package == "ebr"
+    sleeptime = 1
     if page.include?("Document Unavailable\.")
       access = "No access"
     elsif page.include?("Date Published")
@@ -130,6 +135,7 @@ csv_data.each do |r|
     end
 
   elsif package == "ebs"
+    sleeptime = 1
     if page.match(/class="std-warning-text">No results/)
       access = "No access"
     elsif page.include?("eBook Full Text")
@@ -139,13 +145,25 @@ csv_data.each do |r|
     end
 
   elsif package == "end"
+    sleeptime = 1
     if page.include?("Invalid record")
       access = "deleted OK"
     else
       access = "possible ghost record - check"
     end    
+
+  elsif package == "fmgfod"
+    sleeptime = 10
+    if page.include?("The title you are looking for is no longer available")
+      access = "No access"
+    elsif page.match(/class="now-playing-div/)
+      access = "Full access"
+    else
+      access = "Check access manually"
+    end
     
   elsif package == "nccorv"
+    sleeptime = 1
     if page.match(/<div id="relatedVolumes">/)
       access = "related volumes section present"
     else
@@ -153,6 +171,7 @@ csv_data.each do |r|
     end
 
   elsif package == "sabov"
+    sleeptime = 1
     if page.match(/<a name="otherVols">/)
       access = "other volumes section present"
     else
@@ -160,6 +179,7 @@ csv_data.each do |r|
     end
       
   elsif package == "scid"
+    sleeptime = 1
     if page.match(/<td class=nonSerialEntitlementIcon><span class="sprite_nsubIcon_sci_dir"/)
       access = "Restricted access"
     elsif page.match(/title="You are entitled to access the full text of this document"/)
@@ -169,15 +189,21 @@ csv_data.each do |r|
     end    
 
   elsif package == "skno"
+    sleeptime = 1
     if page.include?("Page Not Found")
       access = "No access - page not found"
-      elsif page.include?("Add to My Lists")
-        access = "Probable full access"
+    elsif page.include?("Users without subscription are not able to see the full content")
+      access = "Restricted access"
+    elsif page.match(/class="restrictedContent"/)
+      access = "Restricted access"
+    elsif page.match(/<p class="lockicon">/)
+      access = "Restricted access"
     else
-      access = "Check access manually"
+      access = "Probable full access"
     end
 
   elsif package == "spr"
+    sleeptime = 1
     if page.match(/viewType="Denial"/) != nil
       access = "Restricted access"
       elsif page.match(/viewType="Full text download"/) != nil
@@ -191,6 +217,7 @@ csv_data.each do |r|
     end
     
   elsif package == "srmo"
+    sleeptime = 1
     if page.include?("Page Not Found")
       access = "No access - page not found"
       elsif page.include?("Add to Methods List")
@@ -200,6 +227,7 @@ csv_data.each do |r|
     end
 
   elsif package == "ss"
+    sleeptime = 1
     if page.include? "SS_NoJournalFoundMsg"
       access = "No access indicated"
     elsif page.include? "SS_Holding"
@@ -209,6 +237,7 @@ csv_data.each do |r|
     end
 
   elsif package == "upso"
+    sleeptime = 1
     if page.include?("<div class=\"contentRestrictedMessage\">")
       access = "Restricted access"
     elsif page.include?("<div class=\"contentItem\">")
@@ -220,6 +249,7 @@ csv_data.each do |r|
     end
 
   elsif package == 'wol'
+    sleeptime = 1
     if page.include?("You have full text access to this content")
       access = "Full access"
     elsif page.include?("You have free access to this content")
@@ -238,6 +268,5 @@ csv_data.each do |r|
   counter += 1
   puts "#{counter} of #{total}, access = #{access}"
   
-  sleeptime = 1
   sleep sleeptime
 end

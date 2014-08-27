@@ -4,9 +4,10 @@ A simple JRuby script to check for full-text access to e-resource titles. Plain 
 This script can currently check for access problems for the following platforms/vendors (so far): 
 - Alexander Street Press 
 - Apabi
+- Duke University Press ebooks (on HighWire platform)
 - Ebrary
 - EBSCOhost eBook Collection
-- Duke University Press ebooks (on HighWire platform)
+- FMG Films on Demand
 - ScienceDirect ebooks (Elsevier)
 - SAGE Knowledge
 - SAGE Research Methods Online 
