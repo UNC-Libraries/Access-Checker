@@ -1,3 +1,4 @@
+#!/usr/bin/env jruby
 # Tested in JRuby 1.7.3
 # Written by Kristina Spurgin
 # Last updated: 20130412
@@ -19,6 +20,8 @@ require 'celerity'
 require 'csv'
 require 'highline/import'
 require 'open-uri'
+
+require 'access_checker'
 
   puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
   puts "What platform/package are you access checking?"

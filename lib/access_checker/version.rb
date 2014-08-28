@@ -1,0 +1,3 @@
+module AccessChecker
+  VERSION = "0.0.1"
+end
