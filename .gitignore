@@ -1,3 +1,4 @@
 data/
 output/
-*.csv*.gem
+*.csv
+*.gem
