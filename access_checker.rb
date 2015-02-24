@@ -63,7 +63,7 @@ end
 b = Celerity::Browser.new(:browser => :firefox)
 #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
 
-if package == "spr"
+if package == "spr" || "ebr"
     b.css = false
     b.javascript_enabled = false
 end
@@ -126,10 +126,10 @@ csv_data.each do |r|
   
   elsif package == "ebr"
     sleeptime = 1
-    if page.include?("Document Unavailable\.")
+    if page.include?("Sorry, this ebook is not available at your library.")
       access = "No access"
-    elsif page.include?("Date Published")
-        access = "Full access"
+    elsif page.match(/Your institution has (unlimited |)access/)
+      access = "Full access"
     else
       access = "Check access manually"
     end
