@@ -30,6 +30,7 @@ require 'open-uri'
   puts "  ebs    : EBSCOhost ebook collection"
   puts "  end    : Endeca - Check for undeleted records"
   puts "  fmgfod : FMG Films on Demand"
+  puts "  kan    : Kanopy Streaming Video"
   puts "  nccorv : NCCO - Check for related volumes"
   puts "  sabov  : Sabin Americana - Check for Other Volumes"
   puts "  scid   : ScienceDirect ebooks (Elsevier)"
@@ -63,7 +64,7 @@ end
 b = Celerity::Browser.new(:browser => :firefox)
 #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
 
-if package == "spr" || "ebr"
+if package == "spr" || "ebr" || "kan"
     b.css = false
     b.javascript_enabled = false
 end
@@ -157,6 +158,16 @@ csv_data.each do |r|
     if page.include?("The title you are looking for is no longer available")
       access = "No access"
     elsif page.match(/class="now-playing-div/)
+      access = "Full access"
+    else
+      access = "Check access manually"
+    end
+
+  elsif package == "kan"
+    sleeptime = 10
+    if page.include?("Your institution has not licensed")
+      access = "No access"
+    elsif page.match(/<div class="player-wrapper"/)
       access = "Full access"
     else
       access = "Check access manually"
