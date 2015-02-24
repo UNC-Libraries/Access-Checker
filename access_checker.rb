@@ -31,6 +31,7 @@ require 'open-uri'
   puts "  end    : Endeca - Check for undeleted records"
   puts "  fmgfod : FMG Films on Demand"
   puts "  kan    : Kanopy Streaming Video"
+  puts "  lion   : LIterature ONline (Proquest)"
   puts "  nccorv : NCCO - Check for related volumes"
   puts "  sabov  : Sabin Americana - Check for Other Volumes"
   puts "  scid   : ScienceDirect ebooks (Elsevier)"
@@ -64,7 +65,7 @@ end
 b = Celerity::Browser.new(:browser => :firefox)
 #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
 
-if package == "spr" || "ebr" || "kan"
+if package == "spr" || "ebr" || "kan" || "lion"
     b.css = false
     b.javascript_enabled = false
 end
@@ -169,6 +170,22 @@ csv_data.each do |r|
       access = "No access"
     elsif page.match(/<div class="player-wrapper"/)
       access = "Full access"
+    else
+      access = "Check access manually"
+    end
+
+  elsif package == "lion"
+    sleeptime = 5
+    if page.match(/javascript:fulltext.*textsFT/)
+      access = "Full access"
+    elsif page.match(/<div class="critrefft">/)
+      access = "Full access (Crit/Ref)"
+    elsif page.match(/forward=critref_ft/)
+      access = "Full access via browse list (crit/ref)"
+    elsif page.match(/<i class="icon-play-circle">/)
+      access = "Full access (video content)"
+    elsif page.include?("An error has occurred which prevents us from displaying this document")
+      access = "Error"
     else
       access = "Check access manually"
     end
