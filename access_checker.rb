@@ -220,6 +220,10 @@ csv_data.each do |r|
     sleeptime = 1
     if page.include?("Page Not Found")
       access = "No access - page not found"
+    elsif page.include?("Error 404")
+      access = "No access - 404 error"
+    elsif page.include?("Unfortunately, there is a problem with this page")
+      access = "No access - Oops problem with page"
     elsif page.include?("Users without subscription are not able to see the full content")
       access = "Restricted access"
     elsif page.match(/class="restrictedContent"/)
@@ -227,7 +231,7 @@ csv_data.each do |r|
     elsif page.match(/<p class="lockicon">/)
       access = "Restricted access"
     else
-      access = "Probable full access"
+      access = "Full access"
     end
 
   elsif package == "spr"
