@@ -25,6 +25,7 @@ require 'open-uri'
   puts "Type one of the following:"
   puts "  apb    : Apabi ebooks"
   puts "  asp    : Alexander Street Press links"
+  puts "  cod    : Criterion on Demand"
   puts "  duphw  : Duke University Press (via HighWire)"
   puts "  ebr    : Ebrary links"
   puts "  ebs    : EBSCOhost ebook collection"
@@ -97,6 +98,16 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
+
+  elsif package == "cod"
+    sleeptime = 1    
+    if page.include?("Due to additional requirements on the part of some of our studios")
+      access = "studio permissions error"
+    elsif page.match(/onclick='dymPlayerState/)
+        access = "Full access"
+    else
+      access = "Check access manually"
+    end    
 
   elsif package == "duphw"
     sleeptime = 1    
