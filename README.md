@@ -11,7 +11,8 @@ This script can currently check for access problems for the following platforms/
 - Duke University Press ebooks (on HighWire platform)
 - Ebrary
 - EBSCOhost eBook Collection
-- FMG Films on Demand
+- FMG Films on Demand (streaming video platform)
+- Criterion on Demand (streaming video platform)
 - ScienceDirect ebooks (Elsevier)
 - SAGE Knowledge
 - SAGE Research Methods Online 
