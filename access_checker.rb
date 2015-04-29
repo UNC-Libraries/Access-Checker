@@ -151,8 +151,8 @@ csv_data.each do |r|
     sleeptime = 1
     if page.match(/class="std-warning-text">No results/)
       access = "No access"
-    elsif page.include?("eBook Full Text")
-        access = "Full access"
+    elsif page.match(/"available":"True"/)
+      access = "Full access"
     else
       access = "check"
     end
