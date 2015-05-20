@@ -293,12 +293,15 @@ csv_data.each do |r|
 
   elsif package == 'wol'
     sleeptime = 1
-    if page.include?("You have full text access to this content")
+    if page.match(/<span class="licensedContent"/)
       access = "Full access"
-    elsif page.include?("You have free access to this content")
-      access = "Full access (free)"
+      if page.include?("agu_logo.jpg")
+        access += " - AGU"
+      end
     elsif page.include?("DOI Not Found")
       access = "DOI error"
+    elsif page.include?("page you've requested does not exist at this address")
+      access = "Page not found error"
     else
       access = "Check access manually"
     end
