@@ -251,6 +251,10 @@ csv_data.each do |r|
       access = "Restricted access"
       elsif page.match(/viewType="Full text download"/) != nil
         access = "Full access"
+      elsif page.match(/viewType="Book pdf download"/) != nil
+        access = "Full access"
+      elsif page.match(/viewType="EPub download"/) != nil
+        access = "Full access"
       elsif page.match(/DOI Not Found/) != nil
         access = "DOI error"
       elsif page.include?("Bookshop, Wageningen")
