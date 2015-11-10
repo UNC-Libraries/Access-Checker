@@ -25,6 +25,7 @@ require 'open-uri'
   puts "Type one of the following:"
   puts "  apb    : Apabi ebooks"
   puts "  asp    : Alexander Street Press links"
+  puts "  ciao   : Columbia International Affairs Online"  
   puts "  cod    : Criterion on Demand"
   puts "  duphw  : Duke University Press (via HighWire)"
   puts "  ebr    : Ebrary links"
@@ -99,6 +100,14 @@ csv_data.each do |r|
       access = "Check access manually"
     end
 
+  elsif package == "ciao"
+    sleeptime = 1    
+    if page.match(/<dd class="blacklight"><embed src="\/attachments\//)
+      access = "Full Access"
+    else
+      access = "Check access manually"
+    end
+    
   elsif package == "cod"
     sleeptime = 1    
     if page.include?("Due to additional requirements on the part of some of our studios")
