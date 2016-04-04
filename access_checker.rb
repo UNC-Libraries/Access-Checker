@@ -264,8 +264,12 @@ csv_data.each do |r|
         access = "Full access"
       elsif page.match(/viewType="EPub download"/) != nil
         access = "Full access"
+      elsif page.match(/viewType="Chapter pdf download"/) != nil
+        access = "Full access (probably). Some chapters can be downloaded, but it appears the entire book cannot. May want to check manually."
       elsif page.match(/DOI Not Found/) != nil
         access = "DOI error"
+      elsif page.match(/<h1>Page not found<\/h1>/) != nil
+        access = "Page not found (404) error"
       elsif page.include?("Bookshop, Wageningen")
         access = "wageningenacademic.com"
     else
