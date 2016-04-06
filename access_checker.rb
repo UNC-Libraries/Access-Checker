@@ -27,6 +27,7 @@ require 'open-uri'
   puts "  asp    : Alexander Street Press links"
   puts "  ciao   : Columbia International Affairs Online"  
   puts "  cod    : Criterion on Demand"
+  puts "  cup    : Cambridge University Press"
   puts "  duphw  : Duke University Press (via HighWire)"
   puts "  ebr    : Ebrary links"
   puts "  ebs    : EBSCOhost ebook collection"
@@ -116,7 +117,15 @@ csv_data.each do |r|
         access = "Full access"
     else
       access = "Check access manually"
-    end    
+    end
+
+  elsif package == "cup"
+    sleeptime = 1    
+    if page.include?("This icon indicates that your institution has purchased full access.")
+      access = "Full access"
+    else
+      access = "Restricted access"
+    end        
 
   elsif package == "duphw"
     sleeptime = 1    
