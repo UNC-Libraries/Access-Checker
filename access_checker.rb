@@ -25,9 +25,9 @@ require 'open-uri'
   puts "Type one of the following:"
   puts "  apb    : Apabi ebooks"
   puts "  asp    : Alexander Street Press links"
+  puts "  cup    : Cambridge University Press"
   puts "  ciao   : Columbia International Affairs Online"  
   puts "  cod    : Criterion on Demand"
-  puts "  cup    : Cambridge University Press"
   puts "  duphw  : Duke University Press (via HighWire)"
   puts "  ebr    : Ebrary links"
   puts "  ebs    : EBSCOhost ebook collection"
@@ -43,6 +43,7 @@ require 'open-uri'
   puts "  srmo   : SAGE Research Methods Online links"
   puts "  ss     : SerialsSolutions links"
   puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
+  puts "  waf    : Wright American Fiction links"
   puts "  wol    : Wiley Online Library"
   puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 
@@ -316,6 +317,14 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
+
+  elsif package == "waf"
+    sleeptime = 1
+    if page.include?("title=\"View the entire text of the document.  NOTE: Text might be very lengthy.\">Entire Document</a>")
+      access = "Full access"
+    else
+      access = "Check access manually"
+    end    
 
   elsif package == 'wol'
     sleeptime = 1
