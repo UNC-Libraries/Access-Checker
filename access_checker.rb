@@ -254,11 +254,15 @@ csv_data.each do |r|
       access = "No access - 404 error"
     elsif page.include?("Unfortunately, there is a problem with this page")
       access = "No access - Oops problem with page"
+    elsif page.include?("page you requested couldn't be found")
+      access = "No access - page not found"
     elsif page.include?("Users without subscription are not able to see the full content")
       access = "Restricted access"
     elsif page.match(/class="restrictedContent"/)
       access = "Restricted access"
     elsif page.match(/<p class="lockicon">/)
+      access = "Restricted access"
+    elsif page.match(/<div class="lock"><\/div>/)
       access = "Restricted access"
     else
       access = "Full access"
