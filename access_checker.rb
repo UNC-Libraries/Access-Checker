@@ -332,17 +332,23 @@ csv_data.each do |r|
 
   elsif package == 'wol'
     sleeptime = 1
-    if page.match(/<span class="licensedContent"/)
+    if page.include?("You have full text access to this content</span><h1 id=\"productTitle\">")
       access = "Full access"
       if page.include?("agu_logo.jpg")
         access += " - AGU"
       end
+    elsif page.include?("You have full text access to this content</span>")
+      access = "Full text access to partial contents"
+    elsif page.match(/You have free access to this content<\/span><input type="checkbox" name="doi" id="option[0-9]+" value="\d{2}\.\d{4}\/[0-9Xx]+\.(?!app|fmatter|index)/)
+      access = "Free access to some content. Best to check manually. If normal front/backmatter is being reported this way, please report the issue at: https://github.com/UNC-Libraries/Ebook-Access-Checker/issues"
+    elsif page.match(/You have free access to this content<\/span><input type="checkbox" name="doi" id="option[0-9]+" value="\d{2}\.\d{4}\/[0-9Xx]+\.(app|fmatter|index)/)
+      access = "Free access to normal front/backmatter only. Currently this includes book sections whose DOIs include: .fmatter, .app, and .index."
     elsif page.include?("DOI Not Found")
       access = "DOI error"
     elsif page.include?("page you've requested does not exist at this address")
       access = "Page not found error"
     else
-      access = "Check access manually"
+      access = "Check manually"
     end
   end
 
