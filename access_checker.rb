@@ -1,6 +1,6 @@
 # Tested in JRuby 1.7.3
 # Written by Kristina Spurgin
-# Last updated: 20130412
+# Last updated: 2016-04-15
 
 # Usage:
 # jruby -S access_checker.rb [inputfilelocation] [outputfilelocation]
