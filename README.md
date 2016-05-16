@@ -69,6 +69,7 @@ If your URLs are prefixed with proxy strings, and you are running the script fro
 ```cd C:\Users\you\rubyscripts```
 
 In your command line shell, type (substitute in the name of your actual input file and the desired name for your actual output file): 
+
 ```jruby -S access_checker.rb inputfile.csv outputfile.csv```
 
 You may run into trouble if the filenames or directory names you need to point the Access Checker to contain spaces. In this case, it may work if you enclose the input and output file names/paths with double quotes:
