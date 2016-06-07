@@ -20,36 +20,39 @@ require 'csv'
 require 'highline/import'
 require 'open-uri'
 
-  puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
-  puts "What platform/package are you access checking?"
-  puts "Type one of the following:"
-  puts "  asp    : Alexander Street Press links"
-  puts "  apb    : Apabi ebooks"
-  puts "  cup    : Cambridge University Press"
-  puts "  ciao   : Columbia International Affairs Online"  
-  puts "  cod    : Criterion on Demand"
-  puts "  duphw  : Duke University Press (via HighWire)"
-  puts "  ebr    : Ebrary links"
-  puts "  ebs    : EBSCOhost ebook collection"
-  puts "  end    : Endeca - Check for undeleted records"
-  puts "  fmgfod : FMG Films on Demand"
-  puts "  kan    : Kanopy Streaming Video"
-  puts "  lion   : LIterature ONline (Proquest)"
-  puts "  nccorv : NCCO - Check for related volumes"
-  puts "  sabov  : Sabin Americana - Check for Other Volumes"
-  puts "  skno   : SAGE Knowledge links"
-  puts "  srmo   : SAGE Research Methods Online links"
-  puts "  scid   : ScienceDirect ebooks (Elsevier)"
-  puts "  ss     : SerialsSolutions links"
-  puts "  spr    : SpringerLink links"
-  puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
-  puts "  waf    : Wright American Fiction"
-  puts "  wol    : Wiley Online Library"
-  puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+puts "What platform/package are you access checking?"
+puts "Type one of the following:"
+puts "  asp    : Alexander Street Press links"
+puts "  apb    : Apabi ebooks"
+puts "  cup    : Cambridge University Press"
+puts "  ciao   : Columbia International Affairs Online"  
+puts "  cod    : Criterion on Demand"
+puts "  duphw  : Duke University Press (via HighWire)"
+puts "  ebr    : Ebrary links"
+puts "  ebs    : EBSCOhost ebook collection"
+puts "  end    : Endeca - Check for undeleted records"
+puts "  fmgfod : FMG Films on Demand"
+puts "  kan    : Kanopy Streaming Video"
+puts "  lion   : LIterature ONline (Proquest)"
+puts "  nccorv : NCCO - Check for related volumes"
+puts "  sabov  : Sabin Americana - Check for Other Volumes"
+puts "  skno   : SAGE Knowledge links"
+puts "  srmo   : SAGE Research Methods Online links"
+puts "  scid   : ScienceDirect ebooks (Elsevier)"
+puts "  ss     : SerialsSolutions links"
+puts "  spr    : SpringerLink links"
+puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
+puts "  waf    : Wright American Fiction"
+puts "  wol    : Wiley Online Library"
+puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 
-  package = ask("Package?  ")
+package = ask("Package?  ")
+if package == "spr"
+  get_ebk_pkg = ask("Do you also want to retrieve subject module/ebook package for each title? y/n  ")
+end
 
-  puts "\nPreparing to check access...\n"
+puts "\nPreparing to check access...\n"
 
 input = ARGV[0]
 output = ARGV[1]
@@ -62,6 +65,10 @@ total = csv_data.count
 headers = csv_data.headers
 headers << "access"
 
+if get_ebk_pkg == "y"
+  headers << "ebook package"
+end
+
 CSV.open(output, "a") do |c|
   c << headers
 end
@@ -70,8 +77,8 @@ b = Celerity::Browser.new(:browser => :firefox)
 #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
 
 if package == "spr" || "ebr" || "kan" || "lion"
-    b.css = false
-    b.javascript_enabled = false
+  b.css = false
+  b.javascript_enabled = false
 end
 
 csv_data.each do |r|
@@ -89,7 +96,7 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end  
-      
+    
   elsif package == "asp"
     sleeptime = 1    
     if page.include?("Page Not Found")
@@ -97,7 +104,7 @@ csv_data.each do |r|
     elsif page.include?("error")
       access = "Error returned"
     elsif page.include?("Browse")
-        access = "Full access"
+      access = "Full access"
     else
       access = "Check access manually"
     end
@@ -115,7 +122,7 @@ csv_data.each do |r|
     if page.include?("Due to additional requirements on the part of some of our studios")
       access = "studio permissions error"
     elsif page.match(/onclick='dymPlayerState/)
-        access = "Full access"
+      access = "Full access"
     else
       access = "Check access manually"
     end
@@ -137,14 +144,14 @@ csv_data.each do |r|
       # This requires an extra step of having the checker visit one of the content pages, and testing whether one gets the content, or a log-in page
       url_title_segment = page.match(/http:\/\/reader\.dukeupress\.edu\/([^\/]*)\/\d+/).captures[0]
       content_url = "http://reader.dukeupress.edu/#{url_title_segment}/25"
-  
+      
       # Celerity couldn't handle opening the fulltext content pages that actually work,
       #  so I switch here to using open-uri to grab the HTML
-  
+      
       thepage = ""
       open(content_url) {|f|
         f.each_line {|line| thepage << line}
-        }
+      }
       
       if thepage.include?("Log in to the e-Duke Books Scholarly Collection site")
         access = "No access"
@@ -154,8 +161,8 @@ csv_data.each do |r|
         access = "Check access manually"
       end
     end
-  
-  
+    
+    
   elsif package == "ebr"
     sleeptime = 1
     if page.include?("Sorry, this ebook is not available at your library.")
@@ -235,10 +242,12 @@ csv_data.each do |r|
     else
       access = "no other volumes section"
     end
-      
+    
   elsif package == "scid"
     sleeptime = 1
-    if page.match(/<td class=nonSerialEntitlementIcon><span class="sprite_nsubIcon_sci_dir"/)
+    if page.include?("(error 404)")
+      access = "404 error"
+    elsif page.match(/<td class=nonSerialEntitlementIcon><span class="sprite_nsubIcon_sci_dir"/)
       access = "Restricted access"
     elsif page.match(/title="You are entitled to access the full text of this document"/)
       access = "Full access"
@@ -272,30 +281,46 @@ csv_data.each do |r|
     sleeptime = 1
     if page.match(/viewType="Denial"/) != nil
       access = "Restricted access"
-      elsif page.match(/viewType="Full text download"/) != nil
-        access = "Full access"
-      elsif page.match(/viewType="Book pdf download"/) != nil
-        access = "Full access"
-      elsif page.match(/viewType="EPub download"/) != nil
-        access = "Full access"
-      elsif page.match(/viewType="Chapter pdf download"/) != nil
-        access = "Full access (probably). Some chapters can be downloaded, but it appears the entire book cannot. May want to check manually."
-      elsif page.match(/DOI Not Found/) != nil
-        access = "DOI error"
-      elsif page.match(/<h1>Page not found<\/h1>/) != nil
-        access = "Page not found (404) error"
-      elsif page.include?("Bookshop, Wageningen")
-        access = "wageningenacademic.com"
+    elsif page.match(/viewType="Full text download"/) != nil
+      access = "Full access"
+    elsif page.match(/viewType="Book pdf download"/) != nil
+      access = "Full access"
+    elsif page.match(/viewType="EPub download"/) != nil
+      access = "Full access"
+    elsif page.match(/viewType="Chapter pdf download"/) != nil
+      access = "Full access (probably). Some chapters can be downloaded, but it appears the entire book cannot. May want to check manually."
+    elsif page.match(/viewType="Reference work entry pdf download"/) != nil
+      access = "Reference work with access to PDF downloads. May want to check manually, as we have discovered some reference work entry PDFs contain no full text content."
+    elsif page.match(/DOI Not Found/) != nil
+      access = "DOI error"
+      no_spr_content = true
+    elsif page.match(/<h1>Page not found<\/h1>/) != nil
+      access = "Page not found (404) error"
+      no_spr_content = true      
+    elsif page.include?("Bookshop, Wageningen")
+      access = "wageningenacademic.com"
+      no_spr_content = true
     else
       access = "Check access manually"
+    end
+
+    if get_ebk_pkg == "y"
+      if no_spr_content
+        ebk_pkg = "n/a"
+      else
+        match_chk = /<a href="\/search\?facet-content-type=%22Book%22&amp;package=\d+&amp;facet-start-year=\d{4}&amp;facet-end-year=\d{4}">([^<]+)<\/a>/.match(page)
+        if match_chk
+          ebk_pkg = match_chk[1]
+        end
+      end
     end
     
   elsif package == "srmo"
     sleeptime = 1
     if page.include?("Page Not Found")
       access = "No access - page not found"
-      elsif page.include?("Add to Methods List")
-        access = "Probable full access"
+    elsif page.include?("Add to Methods List")
+      access = "Probable full access"
     else
       access = "Check access manually"
     end
@@ -352,8 +377,14 @@ csv_data.each do |r|
     end
   end
 
+  if get_ebk_pkg == "y"
+    to_write = [rest_of_data, url, access, ebk_pkg].flatten
+  else
+    to_write = [rest_of_data, url, access].flatten
+  end
+  
   CSV.open(output, "a") do |c|
-    c << [rest_of_data, url, access].flatten
+    c << to_write
   end
 
   counter += 1
