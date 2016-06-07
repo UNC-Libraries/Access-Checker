@@ -247,12 +247,12 @@ csv_data.each do |r|
     sleeptime = 1
     if page.include?("(error 404)")
       access = "404 error"
-    elsif page.match(/<td class=nonSerialEntitlementIcon><span class="sprite_nsubIcon_sci_dir"/)
+    elsif page.match(/<span class="offscreen">You are not entitled to access the full text/)
       access = "Restricted access"
-    elsif page.match(/title="You are entitled to access the full text of this document"/)
+    elsif page.match(/class="offscreen">Entitled to full text<.+{4,}/)
       access = "Full access"
     else
-      access = "check"
+      access = "check manually"
     end    
 
   elsif package == "skno"
