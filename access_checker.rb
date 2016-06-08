@@ -249,6 +249,8 @@ csv_data.each do |r|
       access = "404 error"
     elsif page.match(/<span class="offscreen">You are not entitled to access the full text/)
       access = "Restricted access"
+    elsif page.include?("Sorry, your subscription does not entitle you to access this page")
+      access = "Restricted access - cannot display page"
     elsif page.match(/class="offscreen">Entitled to full text<.+{4,}/)
       access = "Full access"
     else
