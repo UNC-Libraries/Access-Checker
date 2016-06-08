@@ -263,6 +263,16 @@ csv_data.each do |r|
       elsif index_page.match(/class="offscreen">Entitled to full text<.+{4,}/)
         access = "Full access to 4 or more reference work articles"
       end
+    elsif page.match(/<a href="#ancsc\d+"/)
+      new_url_suffix = /<a href="#ancsc\d+" data-url="([^"]+)"/.match(page)[1].gsub!(/&amp;/,'&')
+      new_url = url + new_url_suffix
+      b.goto(new_url)
+      index_page = b.html
+      if index_page.match(/<span class="offscreen">You are not entitled to access the full text/)
+        access = "Restricted access"
+      elsif index_page.match(/class="offscreen">Entitled to full text<.+{4,}/)
+        access = "Full access to 4 or more reference work articles"
+      end
     else
       access = "check manually"
     end    
