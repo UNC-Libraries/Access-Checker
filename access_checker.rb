@@ -253,6 +253,16 @@ csv_data.each do |r|
       access = "Restricted access - cannot display page"
     elsif page.match(/class="offscreen">Entitled to full text<.+{4,}/)
       access = "Full access"
+    elsif page.match(/class="mrwLeftLinks"><a href=\/science\?_ob=RefWorkIndexURL&_idxType=AR/)
+      new_url_suffix = /\/science\?_ob=RefWorkIndexURL&_idxType=AR[^ ]+/.match(page)
+      new_url = "http://www.sciencedirect.com" + new_url_suffix.to_s
+      b.goto(new_url)
+      index_page = b.html
+      if index_page.match(/<span class="offscreen">You are not entitled to access the full text/)
+        access = "Restricted access"
+      elsif index_page.match(/class="offscreen">Entitled to full text<.+{4,}/)
+        access = "Full access to 4 or more reference work articles"
+      end
     else
       access = "check manually"
     end    
