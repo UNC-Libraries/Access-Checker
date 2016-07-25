@@ -103,12 +103,12 @@ csv_data.each do |r|
       access = "Page not found"
     elsif page.include?("Trial login | Alexander Street")
       access = "Trial"
-    elsif page.match(/(\s|"|'|\/|\.)[Ee]rror/)
-      access = "Error returned"
     elsif page.match(/link rel="preconnect"/)
       access = "Video access"
     elsif page.include?("Browse")
       access = "Full access"
+    elsif page.match(/(\s|"|'|\/|\.)[Ee]rror/)
+      access = "Error returned"
     else
       access = "Check access manually"
     end
