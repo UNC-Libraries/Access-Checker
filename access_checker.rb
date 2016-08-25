@@ -103,6 +103,10 @@ csv_data.each do |r|
       access = "Page not found"
     elsif page.include?("Trial login | Alexander Street")
       access = "Trial"
+    elsif page.include?("<span>Your institution does not have access to this particular content.</span>")
+      access = "Institution does not have access"
+    elsif page.match(/<source src="http:\/\/alexstreet\.vo\.llnwd\.net/)
+      access = "Video access"
     elsif page.match(/link rel="preconnect"/)
       access = "Video access"
     elsif page.include?("Browse")
