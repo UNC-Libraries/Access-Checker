@@ -77,7 +77,7 @@ end
 b = Celerity::Browser.new(:browser => :firefox)
 #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
 
-if package == "spr" || "ebr" || "kan" || "lion"
+if package == "spr" || "eai" || "ebr" || "kan" || "lion"
   b.css = false
   b.javascript_enabled = false
 end
