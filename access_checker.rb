@@ -29,6 +29,7 @@ puts "  cup    : Cambridge University Press"
 puts "  ciao   : Columbia International Affairs Online"  
 puts "  cod    : Criterion on Demand"
 puts "  duphw  : Duke University Press (via HighWire)"
+puts "  eai    : Early American Imprints (Readex)"
 puts "  ebr    : Ebrary links"
 puts "  ebs    : EBSCOhost ebook collection"
 puts "  end    : Endeca - Check for undeleted records"
@@ -169,7 +170,16 @@ csv_data.each do |r|
         access = "Check access manually"
       end
     end
-    
+
+  elsif package == "eai"
+    sleeptime = 1
+    if page.match(/TypeError: Cannot read property "UNQ" from undefined \(eai\.js#595\)/m)
+      access = "No access: TypeError: Cannot read property UNQ from undefined (eai.js#595)"
+    elsif page.match(/f_mode=downloadPages">Download Pages/)
+      access = "Full access"
+    else
+      access = "Check access manually"
+    end
     
   elsif package == "ebr"
     sleeptime = 1
