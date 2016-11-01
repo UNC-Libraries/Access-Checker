@@ -175,6 +175,8 @@ csv_data.each do |r|
     sleeptime = 1
     if page.match(/TypeError: Cannot read property "UNQ" from undefined \(eai\.js#595\)/m)
       access = "No access: TypeError: Cannot read property UNQ from undefined (eai.js#595)"
+    elsif page.match(/TypeError: Cannot read property "PRDI" from undefined \(eai\.js#718\)/m)
+      access = "No access: TypeError: Cannot read property PRDI from undefined (eai.js#718)"      
     elsif page.match(/f_mode=downloadPages">Download Pages/)
       access = "Full access"
     else
@@ -299,6 +301,10 @@ csv_data.each do |r|
     sleeptime = 1
     if page.include?("Page Not Found")
       access = "No access - page not found"
+    elsif page.include?("'access': 'false'")
+      access = "Restricted access"
+    elsif page.include?("'access': 'true'")
+      access = "Full access"
     elsif page.include?("Error 404")
       access = "No access - 404 error"
     elsif page.include?("Unfortunately, there is a problem with this page")
@@ -314,7 +320,7 @@ csv_data.each do |r|
     elsif page.match(/<div class="lock"><\/div>/)
       access = "Restricted access"
     else
-      access = "Full access"
+      access = "Check access manually"
     end
 
   elsif package == "spr"
@@ -359,8 +365,10 @@ csv_data.each do |r|
     sleeptime = 1
     if page.include?("Page Not Found")
       access = "No access - page not found"
-    elsif page.include?("Add to Methods List")
-      access = "Probable full access"
+    elsif page.include?("'access': 'false'")
+      access = "Restricted access"
+    elsif page.include?("'access': 'true'")
+      access = "Full access"
     else
       access = "Check access manually"
     end
