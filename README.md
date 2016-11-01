@@ -5,31 +5,7 @@ I wrote an article about the Access Checker: [Getting What We Paid for: a Script
 
 NOTE: this Access Checker is unaware of the title > volume > issue > article hierarchy of e-journals, and doesn't have a way to input or make sense of holdings date ranges. It was designed to check access in collections of discrete items, each of which has a distinct URL---mainly ebook, streaming media, etc collections.
 
-This script can currently check for access problems for the following platforms/vendors (so far): 
-- Alexander Street Press 
-- Apabi
-- Cambridge University Press (including Cambridge Histories Online)
-- Columbia International Affairs Online
-- Criterion on Demand (streaming video platform)
-- Duke University Press ebooks (on HighWire platform)
-- Ebrary
-- EBSCOhost eBook Collection
-- FMG Films on Demand (streaming video platform)
-- Kanopy Streaming Video
-- LIterature ONline (Proquest)
-- SAGE Knowledge
-- SAGE Research Methods Online 
-- ScienceDirect ebooks (Elsevier)
-- SerialsSolutions
-- SpringerLink 
-- University Press (inc. Oxford) Scholarship Online
-- Wright American Fiction
-- Wiley Online Library
-
-The script can check for some other special issues on certain platforms:
-- Endeca - check whether a record is present in the index
-- Nineteenth Century Collections Online - check for presence of "Related Volumes" section on an ebook landing page
-- Sabin Americana - Check for presence of "Other Volumes" link/section
+**For list of collections/platforms/products supported, see [Ebook Access Checker wiki] (https://github.com/UNC-Libraries/Ebook-Access-Checker/wiki)**
 
 # Requirements
 - You must have [JRuby] (http://jruby.org/) installed. This script has been tested on JRuby 1.7.3. Installing JRuby is super-easy; point-and-click .exe installers are available for Windows on the [JRuby homepage] (http://jruby.org/).
