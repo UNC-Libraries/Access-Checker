@@ -25,6 +25,7 @@ puts "What platform/package are you access checking?"
 puts "Type one of the following:"
 puts "  asp    : Alexander Street Press links"
 puts "  apb    : Apabi ebooks"
+puts "  crc    : CRCnetBase"
 puts "  cup    : Cambridge University Press"
 puts "  ciao   : Columbia International Affairs Online"  
 puts "  cod    : Criterion on Demand"
@@ -132,6 +133,16 @@ csv_data.each do |r|
       access = "studio permissions error"
     elsif page.match(/onclick='dymPlayerState/)
       access = "Full access"
+    else
+      access = "Check access manually"
+    end
+
+  elsif package == "crc"
+    sleeptime = 1    
+    if page.match(/<title>\s*CRCnetBASE\s*-\s*Advanced Search\s*<\/title>/)
+      access = "Goes to advanced search page"
+    elsif page.match(/(.* class="accessIcon fullAccess"){7}/)
+      access = "7 or more chapters have full text access -- Probably full access"  
     else
       access = "Check access manually"
     end
