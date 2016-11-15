@@ -44,6 +44,7 @@ puts "  srmo   : SAGE Research Methods Online links"
 puts "  scid   : ScienceDirect ebooks (Elsevier)"
 puts "  ss     : SerialsSolutions links"
 puts "  spr    : SpringerLink links"
+puts "  tf     : Taylor & Francis"
 puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
 puts "  waf    : Wright American Fiction"
 puts "  wol    : Wiley Online Library"
@@ -390,6 +391,16 @@ csv_data.each do |r|
       access = "No access indicated"
     elsif page.include? "SS_Holding"
       access = "Access indicated"
+    else
+      access = "Check access manually"
+    end
+
+  elsif package == "tf"
+    sleeptime = 1
+    if page.include? ("?DrmAccessMode=offline\">Download book")
+      access = "Full access"
+    elsif page.match(/<title>\s*Taylor & Francis eBooks\s*-\s*Error\s*<\/title>/)
+      access = "No access: T&F error"
     else
       access = "Check access manually"
     end
