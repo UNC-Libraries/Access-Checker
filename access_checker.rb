@@ -237,6 +237,10 @@ csv_data.each do |r|
     sleeptime = 10
     if page.include?("Your institution has not licensed")
       access = "No access"
+    elsif page.include?("This film is not available at your institution")
+      access = "No access"
+    elsif page.include?("Sorry, this video is not available in your territory")
+      access = "No access"
     elsif page.match(/<div class="player-wrapper"/)
       access = "Full access"
     else
