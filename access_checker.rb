@@ -29,6 +29,7 @@ puts "  crc    : CRCnetBase"
 puts "  cup    : Cambridge University Press"
 puts "  ciao   : Columbia International Affairs Online"  
 puts "  cod    : Criterion on Demand"
+puts "  dgry   : De Gruyter ebook platform"
 puts "  duphw  : Duke University Press (via HighWire)"
 puts "  eai    : Early American Imprints (Readex)"
 puts "  ebr    : Ebrary links"
@@ -38,6 +39,7 @@ puts "  fmgfod : FMG Films on Demand"
 puts "  kan    : Kanopy Streaming Video"
 puts "  lion   : LIterature ONline (Proquest)"
 puts "  nccorv : NCCO - Check for related volumes"
+puts "  obo    : Oxford Bibliographies Online"
 puts "  sabov  : Sabin Americana - Check for Other Volumes"
 puts "  skno   : SAGE Knowledge links"
 puts "  srmo   : SAGE Research Methods Online links"
@@ -154,7 +156,19 @@ csv_data.each do |r|
       access = "Full access"
     else
       access = "Restricted access"
-    end        
+    end
+
+  elsif package == "dgry"
+    sleeptime = 1
+    if page.include?("\"pf:authorized\":\"authorized\"")
+      access = "Full access"
+    elsif page.include?("\"pf:authorized\":\"not-authorized\"")
+      access = "Restricted access"
+    elsif page.include?("<div class=\"accessModule whiteModule\" id=\"access-from\">")
+      access = "Full access"
+    else
+      access = "Check access manually"
+    end
 
   elsif package == "duphw"
     sleeptime = 1    
@@ -269,6 +283,18 @@ csv_data.each do |r|
       access = "related volumes section present"
     else
       access = "no related volumes section"
+    end
+
+  elsif package == "obo"
+    sleeptime = 1
+    if page.include?("DOI Not Found")
+      access = "DOI error"
+    elsif page.match(/pf:contentType":"FULLTEXT/)
+      access = "Full access" 
+    elsif page.match(/pf:contentType":"RESTRICTED/)
+      access = "Restricted"
+    else
+      access = "Check manually"
     end
 
   elsif package == "sabov"
