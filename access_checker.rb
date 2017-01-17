@@ -105,6 +105,9 @@ csv_data.each do |r|
       page = "This script is not configured to accept this URL structure."
     end
   else
+    #
+    # For every package but SerSol, do this:
+    #
     b.goto(url)
     page = b.html
   end
