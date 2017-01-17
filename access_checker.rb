@@ -91,8 +91,23 @@ csv_data.each do |r|
   url = row_array.pop
   rest_of_data = row_array
 
-  b.goto(url)
-  page = b.html
+  if package == "ss"
+    # this creates a new url based on the library code (e.g. VB3LK7EB4T)
+    # and criteria (e.g. JC_005405622) to get around the angular.js
+    # it may not work on all serialsolutions URLS. Sample, working url:
+    # url = 'http://VB3LK7EB4T.search.serialssolutions.com/?V=1.0&L=VB3LK7EB4T&S=JCs&C=JC_005405622&T=marc'
+    match = url.match('://([^.]*).*&C=([^&]*)')[1..2]
+    if match
+      lib, criteria = match[1..2]
+      url2 = "http://%s.search.serialssolutions.com/ejp/api/1/libraries/%s/search/types/title_code/%s" % [lib, lib, criteria]
+      page = open(url2).read
+    else
+      page = "This script is not configured to accept this URL structure."
+    end
+  else
+    b.goto(url)
+    page = b.html
+  end
 
   if package == "apb"
     sleeptime = 1
@@ -417,10 +432,12 @@ csv_data.each do |r|
 
   elsif package == "ss"
     sleeptime = 1
-    if page.include? "SS_NoJournalFoundMsg"
+    if page.match('{"titles":\[\],"pages":\[\]')
       access = "No access indicated"
-    elsif page.include? "SS_Holding"
+    elsif page.match('{"titles":\[{"title":')
       access = "Access indicated"
+    elsif page.match("This script is not configured to accept this URL structure.")
+      access = "Unknown URL structure."
     else
       access = "Check access manually"
     end
