@@ -24,6 +24,7 @@ puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 puts "What platform/package are you access checking?"
 puts "Type one of the following:"
 puts "  asp    : Alexander Street Press links"
+puts "  alman  : Al Manhal"
 puts "  apb    : Apabi ebooks"
 puts "  crc    : CRCnetBase"
 puts "  cup    : Cambridge University Press"
@@ -94,10 +95,11 @@ csv_data.each do |r|
   if package == "ss"
     # this creates a new url based on the library code (e.g. VB3LK7EB4T)
     # and criteria (e.g. JC_005405622) to get around the angular.js
-    # it may not work on all serialsolutions URLS. Sample, working url:
+    # it may not work on all serialsolutions URLS. Sample, working urls:
     # url = 'http://VB3LK7EB4T.search.serialssolutions.com/?V=1.0&L=VB3LK7EB4T&S=JCs&C=JC_005405622&T=marc'
-    match = url.match('://([^.]*).*&C=([^&]*)')[1..2]
-    if match
+    # url = 'http://VB3LK7EB4T.search.serialssolutions.com/?V=1.0&L=VB3LK7EB4T&S=JCs&C=TC_026248270&T=marc'
+    match = url.match('://([^.]*).*&C=([^&]*)')
+    if match and match.size == 3
       lib, criteria = match[1..2]
       url2 = "http://%s.search.serialssolutions.com/ejp/api/1/libraries/%s/search/types/title_code/%s" % [lib, lib, criteria]
       page = open(url2).read
@@ -112,6 +114,7 @@ csv_data.each do |r|
     page = b.html
   end
 
+
   if package == "apb"
     sleeptime = 1
     if page.match(/type="onlineread"/)
@@ -119,7 +122,19 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end  
-    
+
+  elsif package == "alman"
+    sleeptime = 1
+    if page.include?("\"AvailabilityMode\":4")
+      access = "Preview mode"  
+    elsif page.include?("\"AvailabilityMode\":2")
+      access = "Full access"
+    elsif page.include?("id=\"searchBox")
+      access = "No access. Item not found"
+    else
+      access = "Check access manually"
+    end
+
   elsif package == "asp"
     sleeptime = 1    
     if page.include?("Page Not Found")
