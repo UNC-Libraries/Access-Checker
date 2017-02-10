@@ -82,7 +82,7 @@ end
 b = Celerity::Browser.new(:browser => :firefox)
 #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
 
-if package == "spr" || "eai" || "ebr" || "kan" || "lion"
+if package == "spr" || "eai" || "ebr" || "kan" || "lion" || "ebs"
   b.css = false
   b.javascript_enabled = false
 end
@@ -254,6 +254,14 @@ csv_data.each do |r|
 
   elsif package == "ebs"
     sleeptime = 1
+    #reformulate url and follow to actual results
+    if page.match(/window.location.replace.'([^']*)/)
+      query = page.match(/window.location.replace.'([^']*)/)[1]
+      baseurl = b.url.gsub(/plink.*/,'')
+      url = baseurl + query
+      b.goto(url)
+      page = b.html
+    end
     if page.match(/class="std-warning-text">No results/)
       access = "No access"
     elsif page.match(/"available":"True"/)
