@@ -26,6 +26,7 @@ puts "Type one of the following:"
 puts "  asp    : Alexander Street Press links"
 puts "  alman  : Al Manhal"
 puts "  apb    : Apabi ebooks"
+puts "  brep   : Brepols (brepolsonline.net)"
 puts "  crc    : CRCnetBase"
 puts "  cup    : Cambridge University Press"
 puts "  ciao   : Columbia International Affairs Online"  
@@ -155,6 +156,18 @@ csv_data.each do |r|
       access = "Check access manually"
     end
 
+  elsif package == "brep"
+    sleeptime = 1    
+    if page.match(/class="previewContent/)
+      access = "No access"
+    elsif page.match(/class="error">Book not found./)
+      access = "Page not found"
+    elsif page.match(/title="Full Access"/)
+      access = "Full Access"
+    else
+      access = "Check access manually"
+    end
+    
   elsif package == "ciao"
     sleeptime = 1    
     if page.match(/<dd class="blacklight"><embed src="\/attachments\//)
