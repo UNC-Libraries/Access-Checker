@@ -42,6 +42,7 @@ puts "  kan    : Kanopy Streaming Video"
 puts "  lion   : LIterature ONline (Proquest)"
 puts "  nccorv : NCCO - Check for related volumes"
 puts "  obo    : Oxford Bibliographies Online"
+puts "  oho    : Oxford Handbooks Online"
 puts "  sabov  : Sabin Americana - Check for Other Volumes"
 puts "  skno   : SAGE Knowledge links"
 puts "  srmo   : SAGE Research Methods Online links"
@@ -347,6 +348,22 @@ csv_data.each do |r|
       access = "Full access" 
     elsif page.match(/pf:contentType":"RESTRICTED/)
       access = "Restricted"
+    else
+      access = "Check manually"
+    end
+
+  elsif package == "oho"
+    sleeptime = 1
+    if page.include?("DOI Not Found")
+      access = "DOI error"
+    elsif page.match(/pf:authorized":"authorized/)
+      access = "Full access" 
+    elsif page.match(/pf:authorized":"not-authorized/)
+      if page.match(/Page Not Found/)
+        access = "Page not found"
+      else
+        access = "Restricted"
+      end
     else
       access = "Check manually"
     end
