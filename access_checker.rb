@@ -84,6 +84,11 @@ end
 b = Celerity::Browser.new(:browser => :firefox)
 #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
 
+if package == "oho" || package == "obo"
+  # unite Oxford logic under upso
+  package = "upso"
+end
+
 if package == "spr" || "eai" || "ebr" || "kan" || "lion" || "ebs"
   b.css = false
   b.javascript_enabled = false
@@ -115,7 +120,6 @@ csv_data.each do |r|
     b.goto(url)
     page = b.html
   end
-
 
   if package == "apb"
     sleeptime = 1
@@ -340,33 +344,12 @@ csv_data.each do |r|
       access = "no related volumes section"
     end
 
-  elsif package == "obo"
-    sleeptime = 1
-    if page.include?("DOI Not Found")
-      access = "DOI error"
-    elsif page.match(/pf:contentType":"FULLTEXT/)
-      access = "Full access" 
-    elsif page.match(/pf:contentType":"RESTRICTED/)
-      access = "Restricted"
-    else
-      access = "Check manually"
-    end
-
-  elsif package == "oho"
-    sleeptime = 1
-    if page.include?("DOI Not Found")
-      access = "DOI error"
-    elsif page.match(/pf:authorized":"authorized/)
-      access = "Full access" 
-    elsif page.match(/pf:authorized":"not-authorized/)
-      if page.match(/Page Not Found/)
-        access = "Page not found"
-      else
-        access = "Restricted"
-      end
-    else
-      access = "Check manually"
-    end
+  # elsif package == "obo"
+  # elsif package == "oho"
+  #
+  # Oxford logic is united under 'upso'
+  # obo and oho remain as entries on the menu, but if selected are
+  # reassigned to 'upso' before this conditional
 
   elsif package == "sabov"
     sleeptime = 1
@@ -510,14 +493,18 @@ csv_data.each do |r|
 
   elsif package == "upso"
     sleeptime = 1
-    if page.include?("<div class=\"contentRestrictedMessage\">")
-      access = "Restricted access"
-    elsif page.include?("<div class=\"contentItem\">")
-      access = "Full access"
-    elsif page.include? "DOI Not Found"
-      access = "DOI Error"
+    if page.include?("DOI Not Found")
+      access = "DOI error"
+    elsif page.match(/pf:authorized":"authorized/)
+      access = "Full access" 
+    elsif page.match(/pf:authorized":"not-authorized/)
+      if page.match(/Page Not Found/)
+        access = "Page not found"
+      else
+        access = "Restricted"
+      end
     else
-      access = "Check access manually"
+      access = "Check manually"
     end
 
   elsif package == "waf"
