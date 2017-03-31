@@ -421,7 +421,11 @@ csv_data.each do |r|
 
   elsif package == "spr"
     sleeptime = 1
-    if page.match(/viewType="Denial"/) != nil
+    if page.match(/'HasAccess':'Y'/) != nil
+      access = "Full access"
+    elsif page.match(/'Access Type':'noaccess'/) != nil
+      access = "Restricted access"
+    elsif page.match(/viewType="Denial"/) != nil
       access = "Restricted access"
     elsif page.match(/viewType="Full text download"/) != nil
       access = "Full access"
