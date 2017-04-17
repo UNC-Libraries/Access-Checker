@@ -62,15 +62,54 @@ end
 
 puts "\nPreparing to check access...\n"
 
+
+
+if ARGV.include?('-t') || ARGV.include?('--tab_delimited')
+  input_is_tab_delimited = true
+  ARGV.delete('-t')
+  ARGV.delete('--tab_delimited')
+else
+  input_is_tab_delimited = false
+end
+
+if ARGV.include?('-b') || ARGV.include?('--write_utf8_bom')
+  write_utf8_bom = true
+  ARGV.delete('-b')
+  ARGV.delete('--write_utf8_bom')
+else
+  write_utf8_bom = false
+end
+
 input = ARGV[0]
 output = ARGV[1]
 
-csv_data = CSV.read(input, :headers => true)
+
+if input_is_tab_delimited
+  csv_data = CSV.read(input,
+                      :headers => true,
+                      :col_sep => "\t",
+                      :quote_char => "\x00") # CSV wants unescaped quote_char
+                                             # only around entire fields. So,
+                                             # give it an unprintable char
+                                             # The default double-quote would
+                                             # likely not comply
+else  
+  csv_data = CSV.read(input, :headers => true)  
+end
+headers = csv_data.headers
+
+
+if write_utf8_bom and not File.exist?(output)
+  File.open(output, 'w', 0644) do |file|
+    file.write "\uFEFF"
+  end
+end
+
 
 counter = 0
 total = csv_data.count
 
-headers = csv_data.headers
+
 headers << "access"
 
 if get_ebk_pkg == "y"
