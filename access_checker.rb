@@ -62,8 +62,6 @@ end
 
 puts "\nPreparing to check access...\n"
 
-
-
 if ARGV.include?('-t') || ARGV.include?('--tab_delimited')
   input_is_tab_delimited = true
   ARGV.delete('-t')
@@ -92,7 +90,7 @@ if input_is_tab_delimited
                                              # only around entire fields. So,
                                              # give it an unprintable char
                                              # The default double-quote would
-                                             # likely not comply
+                                             # likely not comply.
 else  
   csv_data = CSV.read(input, :headers => true)  
 end
@@ -100,7 +98,7 @@ headers = csv_data.headers
 
 
 if write_utf8_bom and not File.exist?(output)
-  File.open(output, 'w', 0644) do |file|
+  File.open(output, 'w') do |file|
     file.write "\uFEFF"
   end
 end
