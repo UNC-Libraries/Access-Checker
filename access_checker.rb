@@ -126,10 +126,9 @@ if package == "oho" || package == "obo"
   package = "upso"
 end
 
-if package == "spr" || "eai" || "ebr" || "kan" || "lion" || "ebs"
-  b.css = false
-  b.javascript_enabled = false
-end
+
+b.css = false
+b.javascript_enabled = false
 
 csv_data.each do |r|
   row_array = r.to_csv.parse_csv
