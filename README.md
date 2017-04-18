@@ -31,7 +31,8 @@ Choose or create a directory/folder on your computer in which to place the acces
 # How to use
 ## Prepare your input file
 The script expects a .csv file containing URLs for which to check access. The column containing the URL **MUST** be the last/right-most column. You may include any number of columns (RecordID#, Title, Publication Date, etc.) to the left of the URL column. 
-Make sure there is only **one** URL per row.
+Make sure there is only **one** URL per row. To use a tab-delimited file as input, see **Optional arguments** below.
+
 
 All URLs/titles in one input file must be in/on the same package/platform. 
 
@@ -51,6 +52,20 @@ In your command line shell, type (substitute in the name of your actual input fi
 You may run into trouble if the filenames or directory names you need to point the Access Checker to contain spaces. In this case, it may work if you enclose the input and output file names/paths with double quotes:
 
 ```jruby -S access_checker.rb "C:\Users\Your Name\access checker\inputfile.csv" "C:\Users\Your Name\access checker\outputfile.csv"```
+
+### Optional arguments
+Include optional arguments like so:
+* jruby -S access_checker.rb [arguments] [input] [output]
+* for example: jruby -S access_checker.rb -t -b inputfile.txt outputfile.csv
+
+Options:
+* -t (or --tab_delimited):
+
+    the input file is read as a tab-delimited file rather than a csv. If newlines or tabs are contained in the data fields themselves, this could cause errors.
+
+* -b (or --write_utf8_bom)
+
+    when writing to a new (non-existing) output file, manually add a UTF-8 BOM (primary use case: allowing Excel to directly open the csv with proper encoding). Has no effect if appending to an existing output file.
 
 When asked to input "Package?" enter the 3-4 letter code from the list above the input prompt.
 

@@ -3,17 +3,32 @@
 # Last updated: 2016-04-15
 
 # Usage:
-# jruby -S access_checker.rb [inputfilelocation] [outputfilelocation]
+# jruby -S access_checker.rb [arguments] [inputfilelocation] [outputfilelocation]
 
 # Input file: 
 # .csv file with: 
 # - one header row
 # - any number of columns to left of final column
 # - one URL in final column
+# - accepts tab-delimited files through use of arguments
 
 # Output file: 
 # .csv file with all the data from the input file, plus a new column containing
 #   access checker result
+
+# Optional arguments:
+#   e.g. jruby -S access_checker.rb -t -b inputfile.txt outputfile.csv
+#
+# -t (or --tab_delimited):
+#   the input file is read as a tab-delimited file rather than a csv. If
+#   newlines or tabs are contained in the data fields themselves, this could
+#   cause errors.
+#
+# -b (or --write_utf8_bom)
+#   when writing to a new (non-existing) output file, manually add a UTF-8 BOM
+#   (primary use case: allowing Excel to directly open the csv with proper
+#   encoding). Has no effect if appending to an existing output file.
+#
 
 require 'celerity'
 require 'csv'
