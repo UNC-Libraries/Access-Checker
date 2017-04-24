@@ -20,12 +20,13 @@
 #   e.g. jruby -S access_checker.rb -t -b inputfile.txt outputfile.csv
 #
 # -t (or --tab_delimited):
-#   the input file is read as a tab-delimited file rather than a csv. If
+#   The input file is read as a tab-delimited file rather than a csv. If
 #   newlines or tabs are contained in the data fields themselves, this could
-#   cause errors.
+#   cause errors. Should work with utf-8 or unicode input files; may not work
+#   with some other encodings
 #
 # -b (or --write_utf8_bom)
-#   when writing to a new (non-existing) output file, manually add a UTF-8 BOM
+#   When writing to a new (non-existing) output file, manually add a UTF-8 BOM
 #   (primary use case: allowing Excel to directly open the csv with proper
 #   encoding). Has no effect if appending to an existing output file.
 #
@@ -98,14 +99,28 @@ output = ARGV[1]
 
 
 if input_is_tab_delimited
-  csv_data = CSV.read(input,
-                      :headers => true,
-                      :col_sep => "\t",
-                      :quote_char => "\x00") # CSV wants unescaped quote_char
-                                             # only around entire fields. So,
-                                             # give it an unprintable char
-                                             # The default double-quote would
-                                             # likely not comply.
+  begin
+    # attempt to read the file using default quote_char
+    csv_data = CSV.read(input,
+                        :headers => true,
+                        :col_sep => "\t")  
+  rescue CSV::MalformedCSVError
+    begin
+      # CSV wants unescaped quote_char only around entire fields. So, try
+      # giving it an unprintable char.
+      csv_data = CSV.read(input,
+                          :headers => true,
+                          :col_sep => "\t",
+                          :quote_char => "\x00")
+    rescue CSV::MalformedCSVError
+      # try to read the file as Unicode; will convert to utf-8
+      csv_data = CSV.read(input,
+                          :headers => true,
+                          :col_sep => "\t",
+                          :quote_char => "\x00",
+                          :encoding => "BOM|UTF-16LE:UTF-8")
+    end
+  end
 else  
   csv_data = CSV.read(input, :headers => true)  
 end
