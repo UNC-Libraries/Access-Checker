@@ -148,8 +148,15 @@ CSV.open(output, "a") do |c|
   c << headers
 end
 
-b = Celerity::Browser.new(:browser => :firefox)
-#b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
+
+if package == "kan"
+  agent_spoof = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
+  b = Celerity::Browser.new(:browser => :firefox, :user_agent => agent_spoof)
+else
+  b = Celerity::Browser.new(:browser => :firefox)
+  #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
+end
+
 
 if package == "oho" || package == "obo"
   # unite Oxford logic under upso
@@ -159,6 +166,8 @@ end
 
 b.css = false
 b.javascript_enabled = false
+
+
 
 csv_data.each do |r|
   row_array = r.to_csv.parse_csv
