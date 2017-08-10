@@ -286,8 +286,20 @@ csv_data.each do |r|
 
   elsif package == "dgry"
     sleeptime = 1
+    if page.include?("Too Many Requests")
+      puts "Too many requests, sleeping 60 seconds then will retry."
+      sleep 61
+    end
+    while page.include?("Too Many Requests")
+      puts "Too many requests, retrying after 1 second."
+      sleep 1
+      b.goto(url)
+      page = b.html
+    end
     if page.include?("\"pf:authorized\":\"authorized\"")
       access = "Full access"
+    elsif page.include?("class=\"openAccessImg\"")
+      access = "Open access"
     elsif page.include?("\"pf:authorized\":\"not-authorized\"")
       access = "Restricted access"
     elsif page.include?("<div class=\"accessModule whiteModule\" id=\"access-from\">")
