@@ -47,8 +47,8 @@ puts "  crc    : CRCnetBase"
 puts "  cup    : Cambridge University Press"
 puts "  ciao   : Columbia International Affairs Online"  
 puts "  cod    : Criterion on Demand"
-puts "  dcs    : Digitalia Cinema Studies Collection"
 puts "  dgry   : De Gruyter ebook platform"
+puts "  dgtla  : Digitalia ebooks"
 puts "  duphw  : Duke University Press (via HighWire)"
 puts "  eai    : Early American Imprints (Readex)"
 puts "  ebr    : Ebrary links"
@@ -287,16 +287,6 @@ csv_data.each do |r|
       access = "Restricted access"
     end
 
-  elsif package == "dcs"
-    sleeptime = 1
-    if page.match(/<span class="disponible"/)
-      access = "Full access"
-    elsif page.match(/span class="ndisp"/)
-      access = "No access"
-    else
-      access = "Check access manually"
-    end
-
   elsif package == "dgry"
     sleeptime = 1
     if page.include?("Too Many Requests")
@@ -317,6 +307,16 @@ csv_data.each do |r|
       access = "Restricted access"
     elsif page.include?("<div class=\"accessModule whiteModule\" id=\"access-from\">")
       access = "Full access"
+    else
+      access = "Check access manually"
+    end
+
+  elsif package == "dgtla"
+    sleeptime = 1
+    if page.match(/<span class="disponible"/)
+      access = "Full access"
+    elsif page.match(/span class="ndisp"/)
+      access = "No access"
     else
       access = "Check access manually"
     end
