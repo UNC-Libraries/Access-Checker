@@ -47,6 +47,7 @@ puts "  crc    : CRCnetBase"
 puts "  cup    : Cambridge University Press"
 puts "  ciao   : Columbia International Affairs Online"  
 puts "  cod    : Criterion on Demand"
+puts "  dcs    : Digitalia Cinema Studies Collection"
 puts "  dgry   : De Gruyter ebook platform"
 puts "  duphw  : Duke University Press (via HighWire)"
 puts "  eai    : Early American Imprints (Readex)"
@@ -284,6 +285,16 @@ csv_data.each do |r|
       access = "Full access"
     else
       access = "Restricted access"
+    end
+
+  elsif package == "dcs"
+    sleeptime = 1
+    if page.match(/<span class="disponible"/)
+      access = "Full access"
+    elsif page.match(/span class="ndisp"/)
+      access = "No access"
+    else
+      access = "Check access manually"
     end
 
   elsif package == "dgry"
