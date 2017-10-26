@@ -271,7 +271,9 @@ csv_data.each do |r|
 
   elsif package == "crc"
     sleeptime = 1    
-    if page.match(/<title>\s*CRCnetBASE\s*-\s*Advanced Search\s*<\/title>/)
+    if page.include?('class="error">No book with isbn')
+      access = "No title found at this URL"
+    elsif page.match(/<title>\s*CRCnetBASE\s*-\s*Advanced Search\s*<\/title>/)
       access = "Goes to advanced search page"
     elsif page.match(/(.* class="accessIcon fullAccess"){7}/)
       access = "7 or more chapters have full text access -- Probably full access"  
