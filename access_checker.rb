@@ -43,7 +43,6 @@ puts "  asp    : Alexander Street Press links"
 puts "  alman  : Al Manhal"
 puts "  apb    : Apabi ebooks"
 puts "  brep   : Brepols (brepolsonline.net)"
-puts "  crc    : CRCnetBase"
 puts "  cup    : Cambridge University Press"
 puts "  ciao   : Columbia International Affairs Online"  
 puts "  cod    : Criterion on Demand"
@@ -66,7 +65,6 @@ puts "  srmo   : SAGE Research Methods Online links"
 puts "  scid   : ScienceDirect ebooks (Elsevier)"
 puts "  ss     : SerialsSolutions links"
 puts "  spr    : SpringerLink links"
-puts "  tf     : Taylor & Francis"
 puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
 puts "  waf    : Wright American Fiction"
 puts "  wol    : Wiley Online Library"
@@ -265,18 +263,6 @@ csv_data.each do |r|
       access = "studio permissions error"
     elsif page.match(/onclick='dymPlayerState/)
       access = "Full access"
-    else
-      access = "Check access manually"
-    end
-
-  elsif package == "crc"
-    sleeptime = 1    
-    if page.include?('class="error">No book with isbn')
-      access = "No title found at this URL"
-    elsif page.match(/<title>\s*CRCnetBASE\s*-\s*Advanced Search\s*<\/title>/)
-      access = "Goes to advanced search page"
-    elsif page.match(/(.* class="accessIcon fullAccess"){7}/)
-      access = "7 or more chapters have full text access -- Probably full access"  
     else
       access = "Check access manually"
     end
@@ -583,16 +569,6 @@ csv_data.each do |r|
       access = "Access indicated"
     elsif page.match("This script is not configured to accept this URL structure.")
       access = "Unknown URL structure."
-    else
-      access = "Check access manually"
-    end
-
-  elsif package == "tf"
-    sleeptime = 1
-    if page.include? ("?DrmAccessMode=offline\">Download book")
-      access = "Full access"
-    elsif page.match(/<title>\s*Taylor & Francis eBooks\s*-\s*Error\s*<\/title>/)
-      access = "No access: T&F error"
     else
       access = "Check access manually"
     end
