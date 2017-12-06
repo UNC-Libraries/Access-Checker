@@ -151,6 +151,15 @@ end
 if package == "kan"
   agent_spoof = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
   b = Celerity::Browser.new(:browser => :firefox, :user_agent => agent_spoof)
+elsif package == "asp"
+  # On 12/6/17, ASP was redirecting from http to https when using celerity
+  # and for unknown reason causing SSL/certificate errors. Disabling
+  # secure_ssl, which I don't know that we really care about, for ASP.
+  # ASP should finish making changes to their site in Jan 2018, so some
+  # time after that see if this exception can be removed. (At the time
+  # this was happening visiting an http URL in firefox was not redirecting
+  # and visiting an https URL was not resulting in certificate problems.)
+  b = Celerity::Browser.new(:browser => :firefox, :secure_ssl => false)
 else
   b = Celerity::Browser.new(:browser => :firefox)
   #b = Celerity::Browser.new(:browser => :firefox, :log_level => :all)
