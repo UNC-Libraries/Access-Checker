@@ -48,7 +48,7 @@ puts "  ciao   : Columbia International Affairs Online"
 puts "  cod    : Criterion on Demand"
 puts "  dgry   : De Gruyter ebook platform"
 puts "  dgtla  : Digitalia ebooks"
-puts "  duphw  : Duke University Press (via HighWire)"
+puts "  dupsc  : Duke University Press (via Silverchair)"
 puts "  eai    : Early American Imprints (Readex)"
 puts "  ebr    : Ebrary links"
 puts "  ebs    : EBSCOhost ebook collection"
@@ -318,31 +318,19 @@ csv_data.each do |r|
       access = "Check access manually"
     end
 
-  elsif package == "duphw"
+  elsif package == "dupsc"
     sleeptime = 1    
     if page.include?("DOI Not Found")
       access = "DOI error"
+    elsif page.include?("icon-availability_unlocked")
+      access = "Access to at least some content"
+    # I don't think there's any books we don't have access to, so can't
+    # right now see e.g. if there's an icon-availability_locked" and it's
+    # unknown whether books we don't have access to will have "icon-availability_unlocked"
+    # for, say, prefatory material. Also unclear whether post-migration
+    # grace access is still in effect on 2018-01-10.
     else
-      # I could find nothing on the ebook landing page to differentiate those to which we have full text access from those to which we do not.
-      # This requires an extra step of having the checker visit one of the content pages, and testing whether one gets the content, or a log-in page
-      url_title_segment = page.match(/http:\/\/reader\.dukeupress\.edu\/([^\/]*)\/\d+/).captures[0]
-      content_url = "http://reader.dukeupress.edu/#{url_title_segment}/25"
-      
-      # Celerity couldn't handle opening the fulltext content pages that actually work,
-      #  so I switch here to using open-uri to grab the HTML
-      
-      thepage = ""
-      open(content_url) {|f|
-        f.each_line {|line| thepage << line}
-      }
-      
-      if thepage.include?("Log in to the e-Duke Books Scholarly Collection site")
-        access = "No access"
-      elsif thepage.include?("t-page-nav-arrows")
-        access = "Full access"
-      else
-        access = "Check access manually"
-      end
+      access = "Check access manually"
     end
 
   elsif package == "eai"
@@ -356,7 +344,7 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
-    
+
   elsif package == "ebr"
     sleeptime = 1
     if page.include?("Sorry, this ebook is not available at your library.")
