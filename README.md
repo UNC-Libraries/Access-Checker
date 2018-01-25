@@ -1,11 +1,11 @@
-# E-resource access checker
+# Access checker
 A simple JRuby script to check for full-text access to e-resource titles. Plain old URL/link checking won't alert you if one of your ebook links points to a valid HTML page reading "NO ACCESS." This script will.
 
 I wrote an article about the Access Checker: [Getting What We Paid for: a Script to Verify Full Access to E-Resources] (http://journal.code4lib.org/articles/9684)
 
 NOTE: this Access Checker is unaware of the title > volume > issue > article hierarchy of e-journals, and doesn't have a way to input or make sense of holdings date ranges. It was designed to check access in collections of discrete items, each of which has a distinct URL---mainly ebook, streaming media, etc collections.
 
-**For list of collections/platforms/products supported, see [Ebook Access Checker wiki] (https://github.com/UNC-Libraries/Ebook-Access-Checker/wiki)**
+**For list of collections/platforms/products supported, see [Access Checker wiki] (https://github.com/UNC-Libraries/Access-Checker/wiki)**
 
 # Requirements
 - You must have [JRuby] (http://jruby.org/) installed. This script has been tested on JRuby 1.7.3. Installing JRuby is super-easy; point-and-click .exe installers are available for Windows on the [JRuby homepage] (http://jruby.org/).
@@ -23,7 +23,7 @@ Choose or create a directory/folder on your computer in which to place the acces
 **For the rest of the instructions, we'll assume the path of the rubyscripts folder is:** C:\Users\you\rubyscripts
 
 ## Download the script and put it in the rubyscripts directory
-* Go to https://github.com/UNC-Libraries/Ebook-Access-Checker
+* Go to https://github.com/UNC-Libraries/Access-Checker
 * Download ZIP file containing the files (bottom of right column)
 * Unzip the ZIP file on your computer
 * Put a copy of the access_checker.rb file from the unzipped directory into your rubyscripts directory: C:\Users\you\rubyscripts\access_checker.rb
