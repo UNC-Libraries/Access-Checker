@@ -329,6 +329,8 @@ csv_data.each do |r|
     # unknown whether books we don't have access to will have "icon-availability_unlocked"
     # for, say, prefatory material. Also unclear whether post-migration
     # grace access is still in effect on 2018-01-10.
+    elsif page.include?("Not Found | Duke University Press")
+      access = "Bad DOI (leads to DUP 404 error)"
     else
       access = "Check access manually"
     end
