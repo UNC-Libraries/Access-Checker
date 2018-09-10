@@ -5,14 +5,14 @@
 # Usage:
 # jruby -S access_checker.rb [arguments] [inputfilelocation] [outputfilelocation]
 
-# Input file: 
-# .csv file with: 
+# Input file:
+# .csv file with:
 # - one header row
 # - any number of columns to left of final column
 # - one URL in final column
 # - accepts tab-delimited files through use of arguments
 
-# Output file: 
+# Output file:
 # .csv file with all the data from the input file, plus a new column containing
 #   access checker result
 
@@ -44,7 +44,7 @@ puts "  alman  : Al Manhal"
 puts "  apb    : Apabi ebooks"
 puts "  brep   : Brepols (brepolsonline.net)"
 puts "  cup    : Cambridge University Press"
-puts "  ciao   : Columbia International Affairs Online"  
+puts "  ciao   : Columbia International Affairs Online"
 puts "  cod    : Criterion on Demand"
 puts "  dgry   : De Gruyter ebook platform"
 puts "  dgtla  : Digitalia ebooks"
@@ -102,7 +102,7 @@ if input_is_tab_delimited
     # attempt to read the file using default quote_char
     csv_data = CSV.read(input,
                         :headers => true,
-                        :col_sep => "\t")  
+                        :col_sep => "\t")
   rescue CSV::MalformedCSVError
     begin
       # CSV wants unescaped quote_char only around entire fields. So, try
@@ -120,8 +120,8 @@ if input_is_tab_delimited
                           :encoding => "BOM|UTF-16LE:UTF-8")
     end
   end
-else  
-  csv_data = CSV.read(input, :headers => true)  
+else
+  csv_data = CSV.read(input, :headers => true)
 end
 headers = csv_data.headers
 
@@ -210,12 +210,12 @@ csv_data.each do |r|
       access = "Access probably ok"
     else
       access = "Check access manually"
-    end  
+    end
 
   elsif package == "alman"
     sleeptime = 1
     if page.include?("\"AvailabilityMode\":4")
-      access = "Preview mode"  
+      access = "Preview mode"
     elsif page.include?("\"AvailabilityMode\":2")
       access = "Full access"
     elsif page.include?("id=\"searchBox")
@@ -225,7 +225,7 @@ csv_data.each do |r|
     end
 
   elsif package == "asp"
-    sleeptime = 1    
+    sleeptime = 1
     if page.include?("Page Not Found")
       access = "Page not found"
     elsif page.include?("This is a sample. For full access:")
@@ -247,7 +247,7 @@ csv_data.each do |r|
     end
 
   elsif package == "brep"
-    sleeptime = 1    
+    sleeptime = 1
     if page.match(/class="previewContent/)
       access = "No access"
     elsif page.match(/class="error">Book not found./)
@@ -257,17 +257,17 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
-    
+
   elsif package == "ciao"
-    sleeptime = 1    
+    sleeptime = 1
     if page.match(/<dd class="blacklight"><embed src="\/attachments\//)
       access = "Full Access"
     else
       access = "Check access manually"
     end
-    
+
   elsif package == "cod"
-    sleeptime = 1    
+    sleeptime = 1
     if page.include?("Due to additional requirements on the part of some of our studios")
       access = "studio permissions error"
     elsif page.match(/onclick='dymPlayerState/)
@@ -277,7 +277,7 @@ csv_data.each do |r|
     end
 
   elsif package == "cup"
-    sleeptime = 1    
+    sleeptime = 1
     if page.include?("This icon indicates that your institution has purchased full access.")
       access = "Full access"
     else
@@ -319,7 +319,7 @@ csv_data.each do |r|
     end
 
   elsif package == "dupsc"
-    sleeptime = 1    
+    sleeptime = 1
     if page.include?("DOI Not Found")
       access = "DOI error"
     elsif page.include?("icon-availability_unlocked")
@@ -340,7 +340,7 @@ csv_data.each do |r|
     if page.match(/TypeError: Cannot read property "UNQ" from undefined \(eai\.js#595\)/m)
       access = "No access: TypeError: Cannot read property UNQ from undefined (eai.js#595)"
     elsif page.match(/TypeError: Cannot read property "PRDI" from undefined \(eai\.js#718\)/m)
-      access = "No access: TypeError: Cannot read property PRDI from undefined (eai.js#718)"      
+      access = "No access: TypeError: Cannot read property PRDI from undefined (eai.js#718)"
     elsif page.match(/f_mode=downloadPages">Download Pages/)
       access = "Full access"
     else
@@ -381,7 +381,7 @@ csv_data.each do |r|
       access = "deleted OK"
     else
       access = "possible ghost record - check"
-    end    
+    end
 
   elsif package == "fmgfod"
     sleeptime = 10
@@ -422,7 +422,7 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
-    
+
   elsif package == "nccorv"
     sleeptime = 1
     if page.match(/<div id="relatedVolumes">/)
@@ -445,7 +445,7 @@ csv_data.each do |r|
     else
       access = "no other volumes section"
     end
-    
+
   elsif package == "scid"
     sleeptime = 1
     if page.include?("(error 404)")
@@ -478,7 +478,7 @@ csv_data.each do |r|
       end
     else
       access = "check manually"
-    end    
+    end
 
   elsif package == "skno"
     sleeptime = 1
@@ -508,9 +508,9 @@ csv_data.each do |r|
 
   elsif package == "spr"
     sleeptime = 1
-    if page.match(/'HasAccess':'Y'/) != nil
+    if page.match(/'HasAccess':.Y./) != nil
       access = "Full access"
-    elsif page.match(/'Access Type':'noaccess'/) != nil
+    elsif page.match(/'Access Type':.noaccess./) != nil
       access = "Restricted access"
     elsif page.match(/viewType="Denial"/) != nil
       access = "Restricted access"
@@ -529,7 +529,7 @@ csv_data.each do |r|
       no_spr_content = true
     elsif page.match(/<h1>Page not found<\/h1>/) != nil
       access = "Page not found (404) error"
-      no_spr_content = true      
+      no_spr_content = true
     elsif page.include?("Bookshop, Wageningen")
       access = "wageningenacademic.com"
       no_spr_content = true
@@ -541,13 +541,13 @@ csv_data.each do |r|
       if no_spr_content
         ebk_pkg = "n/a"
       else
-        match_chk = /<a href="\/search\?facet-content-type=%22Book%22&amp;package=\d+&amp;facet-start-year=\d{4}&amp;facet-end-year=\d{4}">([^<]+)<\/a>/.match(page)
+        match_chk = /href="\/search\?facet-content-type&#x3D;%22Book%22&amp;package&#x3D;\d+&amp;facet-start-year&#x3D;\d{4}&amp;facet-end-year&#x3D;\d{4}">([^<]+)<\/a>/.match(page)
         if match_chk
           ebk_pkg = match_chk[1]
         end
       end
     end
-    
+
   elsif package == "srmo"
     sleeptime = 1
     if page.include?("Page Not Found")
@@ -577,7 +577,7 @@ csv_data.each do |r|
     if page.include?("DOI Not Found")
       access = "DOI error"
     elsif page.match(/pf:authorized":"authorized/)
-      access = "Full access" 
+      access = "Full access"
     elsif page.match(/pf:authorized":"not-authorized/)
       if page.match(/Page Not Found/)
         access = "Page not found"
@@ -594,7 +594,7 @@ csv_data.each do |r|
       access = "Full access"
     else
       access = "Check access manually"
-    end    
+    end
 
   elsif package == 'wol'
     sleeptime = 1
@@ -623,13 +623,13 @@ csv_data.each do |r|
   else
     to_write = [rest_of_data, url, access].flatten
   end
-  
+
   CSV.open(output, "a") do |c|
     c << to_write
   end
 
   counter += 1
   puts "#{counter} of #{total}, access = #{access}"
-  
+
   sleep sleeptime
 end
