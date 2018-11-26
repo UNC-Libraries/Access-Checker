@@ -387,6 +387,10 @@ csv_data.each do |r|
     sleeptime = 10
     if page.include?("The title you are looking for is no longer available")
       access = "No access"
+    elsif page.include?("It looks like you were provided with the incorrect link.")
+      access = "No access"
+    elsif page.match(/player_id="divMedia"/)
+      access = "Full access"
     elsif page.match(/class="now-playing-div/)
       access = "Full access"
     else
