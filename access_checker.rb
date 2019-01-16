@@ -59,6 +59,7 @@ puts "  lion   : LIterature ONline (Proquest)"
 puts "  nccorv : NCCO - Check for related volumes"
 puts "  obo    : Oxford Bibliographies Online"
 puts "  oho    : Oxford Handbooks Online"
+puts "  psynet : Psychotherapy.net videos"
 puts "  sabov  : Sabin Americana - Check for Other Volumes"
 puts "  skno   : SAGE Knowledge links"
 puts "  srmo   : SAGE Research Methods Online links"
@@ -441,6 +442,16 @@ csv_data.each do |r|
   # Oxford logic is united under 'upso'
   # obo and oho remain as entries on the menu, but if selected are
   # reassigned to 'upso' before this conditional
+
+elsif package == "psynet"
+  sleeptime = 1
+  if page.match(/The stream you requested does not exist./)
+    access = "Page not found"
+  elsif page.match(/id="stream_content">/)
+    access = "Full access likely"
+  else
+    access = "Check access manually"
+  end
 
   elsif package == "sabov"
     sleeptime = 1
