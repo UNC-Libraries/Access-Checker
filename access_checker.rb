@@ -523,7 +523,7 @@ elsif package == "psynet"
 
   elsif package == "spr"
     sleeptime = 1
-    if page.match(/'HasAccess':.Y./) != nil
+    if page.match(/'HasAccess':.Y./i) != nil
       access = "Full access"
     elsif page.match(/'Access Type':.noaccess./) != nil
       access = "Restricted access"
