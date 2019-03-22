@@ -48,13 +48,17 @@ puts "  ciao   : Columbia International Affairs Online"
 puts "  cod    : Criterion on Demand"
 puts "  dgry   : De Gruyter ebook platform"
 puts "  dgtla  : Digitalia ebooks"
+puts "  dram   : DRAM"
 puts "  dupsc  : Duke University Press (via Silverchair)"
 puts "  eai    : Early American Imprints (Readex)"
 puts "  ebr    : Ebrary links"
 puts "  ebs    : EBSCOhost ebook collection"
 puts "  end    : Endeca - Check for undeleted records"
 puts "  fmgfod : FMG Films on Demand"
+puts "  ieee   : IEEE"
+puts "  igi    : IGI Global"
 puts "  kan    : Kanopy Streaming Video"
+puts "  knv    : Knovel"
 puts "  lion   : LIterature ONline (Proquest)"
 puts "  nccorv : NCCO - Check for related volumes"
 puts "  obo    : Oxford Bibliographies Online"
@@ -318,6 +322,16 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
+    
+  elsif package == "dram"
+    sleeptime = 10
+    if page.include?("This album has been disabled by its rights holders, and no longer appears in search results.")
+      access = "No access"
+    elsif page.include?("Play this album")
+      access = "Full access"
+    else
+      access = "Check access manually"
+    end
 
   elsif package == "dupsc"
     sleeptime = 1
@@ -397,6 +411,32 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
+    
+  elsif package == "ieee"
+    sleeptime = 10
+    if page.include?("Included in Your Digital Subscription")
+      access = "Full access"
+    elsif page.include?("This publication is an Open Access only journal. Open Access provides unrestricted online access to peer-reviewed journal articles.")
+      access = "Full access"
+    elsif page.include?("Freely Available from IEEE")
+      access = "Full access"
+    elsif page.include?("Page Not Found")
+      access = "Check access manually"
+    elsif page.include?("Full text access may be available. Click article title to sign in or learn about subscription options.")
+      access = "Check access manually"
+    else
+      access = "Check access manually"
+    end
+    
+  elsif package == "igi"
+    sleeptime = 10
+    if page.match(/title=:"Owned"/)
+      access = "owned"
+    elsif page.include?("Institution Prices")
+      access = "not owned"
+    else
+      access = "check manually"  
+    end
 
   elsif package == "kan"
     sleeptime = 10
@@ -410,6 +450,16 @@ csv_data.each do |r|
       access = "Full access"
     else
       access = "Check access manually"
+    end
+    
+  elsif package == "knv"
+    sleeptime = 10
+    if page.include?("This Reference is not available in your current subscription.")
+      access = "No access"
+    elsif page.match(/<span class="warning-message">/)
+      access = "No access"
+    else
+      access = "Full access"
     end
 
   elsif package == "lion"
