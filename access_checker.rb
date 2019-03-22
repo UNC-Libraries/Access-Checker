@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 # Tested in JRuby 1.7.3
 # Written by Kristina Spurgin
 # Last updated: 2016-04-15
