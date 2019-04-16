@@ -1,16 +1,16 @@
 # Access checker
 A simple JRuby script to check for full-text access to e-resource titles. Plain old URL/link checking won't alert you if one of your ebook links points to a valid HTML page reading "NO ACCESS." This script will.
 
-I wrote an article about the Access Checker: [Getting What We Paid for: a Script to Verify Full Access to E-Resources] (http://journal.code4lib.org/articles/9684)
+I wrote an article about the Access Checker: [Getting What We Paid for: a Script to Verify Full Access to E-Resources](http://journal.code4lib.org/articles/9684)
 
 NOTE: this Access Checker is unaware of the title > volume > issue > article hierarchy of e-journals, and doesn't have a way to input or make sense of holdings date ranges. It was designed to check access in collections of discrete items, each of which has a distinct URL---mainly ebook, streaming media, etc collections.
 
-**For list of collections/platforms/products supported, see [Access Checker wiki] (https://github.com/UNC-Libraries/Access-Checker/wiki)**
+**For list of collections/platforms/products supported, see [Access Checker wiki](https://github.com/UNC-Libraries/Access-Checker/wiki)**
 
 # Requirements
-- You must have [JRuby] (http://jruby.org/) installed. This script has been tested on JRuby 1.7.3. Installing JRuby is super-easy; point-and-click .exe installers are available for Windows on the [JRuby homepage] (http://jruby.org/).
+- You must have [JRuby](http://jruby.org/) installed. This script has been tested on JRuby 1.7.3. Installing JRuby is super-easy; point-and-click .exe installers are available for Windows on the [JRuby homepage](http://jruby.org/).
 
-- Once JRuby is installed, you will need to install the JRuby Gems [Celerity] (http://celerity.rubyforge.org/) and [Highline] (http://highline.rubyforge.org/).
+- Once JRuby is installed, you will need to install the JRuby Gems Celerity and Highline.
 
 To install these Gems, open the command line shell and type the following commands: 
 - jruby -S gem install celerity
