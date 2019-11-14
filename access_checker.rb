@@ -303,11 +303,11 @@ csv_data.each do |r|
       b.goto(url)
       page = b.html
     end
-    if page.include?("\"pf:authorized\":\"authorized\"")
+    if page.match(/"pf:authorized" ?: ?"authorized"/)
       access = "Full access"
     elsif page.include?("class=\"openAccessImg\"")
       access = "Open access"
-    elsif page.include?("\"pf:authorized\":\"not-authorized\"")
+    elsif page.match(/"pf:authorized" ?: ?"not-authorized"/)
       access = "Restricted access"
     elsif page.include?("<div class=\"accessModule whiteModule\" id=\"access-from\">")
       access = "Full access"
@@ -324,7 +324,7 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
-    
+
   elsif package == "dram"
     sleeptime = 10
     if page.include?("This album has been disabled by its rights holders, and no longer appears in search results.")
@@ -413,7 +413,7 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
-    
+
   elsif package == "ieee"
     sleeptime = 10
     if page.include?("Included in Your Digital Subscription")
@@ -429,7 +429,7 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
-    
+
   elsif package == "igi"
     sleeptime = 10
     if page.match(/title=:"Owned"/)
@@ -437,7 +437,7 @@ csv_data.each do |r|
     elsif page.include?("Institution Prices")
       access = "not owned"
     else
-      access = "check manually"  
+      access = "check manually"
     end
 
   elsif package == "kan"
@@ -453,7 +453,7 @@ csv_data.each do |r|
     else
       access = "Check access manually"
     end
-    
+
   elsif package == "knv"
     sleeptime = 10
     if page.include?("This Reference is not available in your current subscription.")
