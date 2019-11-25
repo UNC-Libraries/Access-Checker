@@ -2,7 +2,6 @@
 
 # Tested in JRuby 1.7.3
 # Written by Kristina Spurgin
-# Last updated: 2016-04-15
 
 # Usage:
 # jruby -S access_checker.rb [arguments] [inputfilelocation] [outputfilelocation]
@@ -158,7 +157,7 @@ end
 if package == "kan"
   agent_spoof = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
   b = Celerity::Browser.new(:browser => :firefox, :user_agent => agent_spoof)
-elsif package == "asp"
+elsif package == "asp" || package == "lion"
   # On 12/6/17, ASP was redirecting from http to https when using celerity
   # and for unknown reason causing SSL/certificate errors. Disabling
   # secure_ssl, which I don't know that we really care about, for ASP.
@@ -466,7 +465,11 @@ csv_data.each do |r|
 
   elsif package == "lion"
     sleeptime = 5
-    if page.match(/javascript:fulltext.*textsFT/)
+    if page.match(/Open access/)
+      access = "Open access"
+    elsif page.match(/Full text available/)
+      access = "Full access"
+    elsif page.match(/javascript:fulltext.*textsFT/)
       access = "Full access"
     elsif page.match(/<div class="critrefft">/)
       access = "Full access (Crit/Ref)"
@@ -476,6 +479,8 @@ csv_data.each do |r|
       access = "Full access (video content)"
     elsif page.include?("An error has occurred which prevents us from displaying this document")
       access = "Error"
+    elsif page.match(/publication was not found/)
+      access = "Not found"
     else
       access = "Check access manually"
     end
