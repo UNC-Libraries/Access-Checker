@@ -431,7 +431,7 @@ csv_data.each do |r|
 
   elsif package == "igi"
     sleeptime = 10
-    if page.match(/title=:"Owned"/)
+    if page.match(/title="Owned"/)
       access = "owned"
     elsif page.include?("Institution Prices")
       access = "not owned"
