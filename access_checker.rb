@@ -69,6 +69,7 @@ puts "  sabov  : Sabin Americana - Check for Other Volumes"
 puts "  skno   : SAGE Knowledge links"
 puts "  srmo   : SAGE Research Methods Online links"
 puts "  scid   : ScienceDirect ebooks (Elsevier)"
+puts "  siam   : SIAM: Society for Industrial and Applied Mathmatics"
 puts "  ss     : SerialsSolutions links"
 puts "  spr    : SpringerLink links"
 puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
@@ -550,6 +551,20 @@ elsif package == "psynet"
       end
     else
       access = "check manually"
+    end
+
+  elsif package == "siam"
+    sleeptime = 1
+    if page.include?("Book not found")
+      access = "Page not found"
+    elsif page.include?('title="No Access"')
+      access = "Restricted access"
+    elsif page.include?('title="Full Access"')
+      access = "Full access"
+    elsif page.include?("DOI Not Found")
+      access = "DOI error"
+    else
+      access = "Check access manually"
     end
 
   elsif package == "skno"
