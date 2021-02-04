@@ -648,9 +648,9 @@ elsif package == "psynet"
     sleeptime = 1
     if page.include?("DOI Not Found")
       access = "DOI error"
-    elsif page.match(/pf:authorized":"authorized/)
+    elsif page.match(/pf:authorized" ?: ?"authorized/)
       access = "Full access"
-    elsif page.match(/pf:authorized":"not-authorized/)
+    elsif page.match(/pf:authorized" ?: ?"not-authorized/)
       if page.match(/Page Not Found/)
         access = "Page not found"
       else
