@@ -529,6 +529,10 @@ elsif package == "psynet"
       access = "Restricted access - cannot display page"
     elsif page.match(/class="offscreen">Entitled to full text<.+{4,}/)
       access = "Full access"
+    elsif page.match(/"isEntitled":false/)
+      access = "Restricted access"
+    elsif page.match(/"isEntitled":true/)
+      access = "Full access"
     elsif page.match(/class="mrwLeftLinks"><a href=\/science\?_ob=RefWorkIndexURL&_idxType=AR/)
       new_url_suffix = /\/science\?_ob=RefWorkIndexURL&_idxType=AR[^ ]+/.match(page)
       new_url = "http://www.sciencedirect.com" + new_url_suffix.to_s
