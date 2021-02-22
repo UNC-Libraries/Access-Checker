@@ -575,9 +575,9 @@ elsif package == "psynet"
     sleeptime = 1
     if page.include?("Page Not Found")
       access = "No access - page not found"
-    elsif page.include?("'access': 'false'")
+    elsif page.match(/<div class="lock-container">\s*<div class="icon-lock">/)
       access = "Restricted access"
-    elsif page.include?("'access': 'true'")
+    elsif page.match(/<div class="lock-container">\s*<img/)
       access = "Full access"
     elsif page.include?("Error 404")
       access = "No access - 404 error"
