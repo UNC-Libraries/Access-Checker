@@ -72,6 +72,7 @@ puts "  scid   : ScienceDirect ebooks (Elsevier)"
 puts "  siam   : SIAM: Society for Industrial and Applied Mathmatics"
 puts "  ss     : SerialsSolutions links"
 puts "  spr    : SpringerLink links"
+puts "  uncfa  : UNC Finding Aids"
 puts "  upso   : University Press (inc. Oxford) Scholarship Online links"
 puts "  waf    : Wright American Fiction"
 puts "  wol    : Wiley Online Library"
@@ -659,6 +660,16 @@ elsif package == "psynet"
       access = "Access indicated"
     elsif page.match("This script is not configured to accept this URL structure.")
       access = "Unknown URL structure."
+    else
+      access = "Check access manually"
+    end
+
+  elsif package == "uncfa"
+    sleeptime = 1
+    if page.match("404 Not Found")
+      access = "Page not found"
+    elsif page.match('Collection')
+      access = "Finding aid accessible"
     else
       access = "Check access manually"
     end
