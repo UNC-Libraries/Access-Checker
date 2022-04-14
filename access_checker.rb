@@ -286,10 +286,15 @@ csv_data.each do |r|
 
   elsif package == "cup"
     sleeptime = 1
-    if page.include?("This icon indicates that your institution has purchased full access.")
+    if page.match(/class="status open-access"/)
+      # oa pages will also include the status entitled line
+      access = "Open access"
+    elsif page.match(/class="status entitled"/)
       access = "Full access"
-    else
+    elsif page.match(/class="status get"/)
       access = "Restricted access"
+    else
+      access = "Check access manually"
     end
 
   elsif package == "dgry"
