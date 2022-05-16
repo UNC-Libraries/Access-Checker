@@ -605,29 +605,32 @@ elsif package == "psynet"
 
   elsif package == "spr"
     sleeptime = 1
-    if page.match(/'HasAccess':.Y./i) != nil
+    case page
+    when /.Open Access.:.Y./i
+      access = "Open access"
+    when /.HasAccess.:.Y./i
       access = "Full access"
-    elsif page.match(/'Access Type':.noaccess./) != nil
+    when /.hasAccess.:.N./i
       access = "Restricted access"
-    elsif page.match(/viewType="Denial"/) != nil
+    when /viewType="Denial"/
       access = "Restricted access"
-    elsif page.match(/viewType="Full text download"/) != nil
+    when /viewType="Full text download"/
       access = "Full access"
-    elsif page.match(/viewType="Book pdf download"/) != nil
+    when /viewType="Book pdf download"/
       access = "Full access"
-    elsif page.match(/viewType="EPub download"/) != nil
+    when /viewType="EPub download"/
       access = "Full access"
-    elsif page.match(/viewType="Chapter pdf download"/) != nil
+    when /viewType="Chapter pdf download"/
       access = "Full access (probably). Some chapters can be downloaded, but it appears the entire book cannot. May want to check manually."
-    elsif page.match(/viewType="Reference work entry pdf download"/) != nil
+    when /viewType="Reference work entry pdf download"/
       access = "Reference work with access to PDF downloads. May want to check manually, as we have discovered some reference work entry PDFs contain no full text content."
-    elsif page.match(/DOI Not Found/) != nil
+    when /DOI Not Found/
       access = "DOI error"
       no_spr_content = true
-    elsif page.match(/<h1>Page not found<\/h1>/) != nil
+    when /<h1>Page not found<\/h1>/
       access = "Page not found (404) error"
       no_spr_content = true
-    elsif page.include?("Bookshop, Wageningen")
+    when /Bookshop, Wageningen/
       access = "wageningenacademic.com"
       no_spr_content = true
     else
