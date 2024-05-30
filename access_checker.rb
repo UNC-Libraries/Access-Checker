@@ -183,6 +183,10 @@ end
 b.css = false
 b.javascript_enabled = false
 
+# APPDEV-11425: Sage platforms require javascript to load
+if package == "srmo" || package == "skno"
+  b.javascript_enabled = true
+end
 
 
 csv_data.each do |r|
